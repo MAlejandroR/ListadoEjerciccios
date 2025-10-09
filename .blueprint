@@ -1,0 +1,10 @@
+created:
+    - database/factories/UnitsFactory.php
+    - database/factories/ExercisesFactory.php
+    - database/migrations/2025_10_04_092144_create_units_table.php
+    - database/migrations/2025_10_04_092145_create_exercises_table.php
+    - app/Models/Units.php
+    - app/Models/Exercises.php
+models:
+    Units: { id: bigIncrements, title: string, description: 'text nullable', number: Integer, timestamps: timestamps, relationships: { hasMany: Exercises } }
+    Exercises: { id: bigIncrements, list_title: string, exercise_title: string, description: 'text nullable', wiki_url: 'string nullable', 'index:name': 'string default:index', show_source: 'biikeab default:false', timestamps: timestamps, relationships: { belongsTo: Units } }

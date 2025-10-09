@@ -1,0 +1,20 @@
+models:
+  Units:
+    id: bigIncrements
+    title: string
+    description: text nullable
+    number: Integer
+    timestamps: true
+    relationships:
+      hasMany: Exercises
+  Exercises:
+    id: bigIncrements
+    list_title: string
+    exercise_title: string
+    description: text nullable #description of the exercise or wiki
+    wiki_url: string nullable #link to wiki or resource or descpription of the exercise
+    index:name: string default:index
+    show_source: biikeab default:false
+    timestamps: true
+    relationships:
+        belongsTo: Units
