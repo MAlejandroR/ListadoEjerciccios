@@ -1,6 +1,13 @@
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+
+
+//Defino un evento que este componente podrá  enviar al componente padre
+const emit = defineEmits (['open-login']);
+
+//Creo una función que asociaré a un evento que ejecutará y  emitirá el evento open-login a componente padre
+const showLoginForm = ()=>emit('open-login')
+
 defineProps<{title: string}>()
 const goToAdmin=()=>{
     window.location.href='/admin'
@@ -15,13 +22,15 @@ const goToAdmin=()=>{
         class="bg-red-700 text-white text-3xl font-bold text-center p-6 uppercase"
         v-bind="$attrs"
     >
-        <h1 class="leading-tight">{{ title }}  </h1>
+        <div class="flex flex-row  items-center">
+        <h1 class=" text-3xl font-bold leading-tight flex-grow">{{ title }}  </h1>
         <button
-            class="btn btn-primary"
-            @click="goToAdmin"
+            class="btn btn-secundary"
+            @click="showLoginForm"
         >
-            Ir al panel de administración
+            Login
         </button>
+        </div>
 
         <!-- Optional: anything extra can be slotted below the title -->
         <slot />

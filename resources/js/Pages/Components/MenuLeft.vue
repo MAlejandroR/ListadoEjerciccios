@@ -1,12 +1,17 @@
 <script setup>
-import { ref, computed } from "vue";
+import {ref, computed} from "vue";
 
+import {usePage} from "@inertiajs/vue3";
+
+
+const page = usePage();
 // Recibimos los props desde Inertia
-const { exercices, units } = defineProps({
+const {exercices, units} = defineProps({
     exercices: Array,
     units: Array,
 });
-
+const user = page.props.auth.user;
+console.log (user)
 // Estado local: control de desplegado por unidad (tema)
 //Creo un array que me dirá cómo está cada unidad
 //Abierta o cerrada
@@ -20,9 +25,9 @@ const toggleUnit = (unitId) => {
     } else {
         openUnits.value.push(unitId);
     }
-    console.log (`unidad de tema para cerrar/abrir ${unitId}`)
-    console.log ("Valor de array openUnits")
-    console.log (openUnits)
+    console.log(`unidad de tema para cerrar/abrir ${unitId}`)
+    console.log("Valor de array openUnits")
+    console.log(openUnits)
 };
 
 // Agrupar los ejercicios por unidad (tema)
@@ -37,10 +42,16 @@ const groupedExercices = computed(() => {
 
     return groups;
 });
-console.log ("grupos de temas");
-console.log (groupedExercices.value);
-console.log ("Unidades");
-console.log (units);
+console.log("grupos de temas");
+console.log(groupedExercices.value);
+console.log("Unidades");
+console.log(units);
+const isAdmin = computed(() => page.props.auth.user?.is_admin === true);
+
+console.log(isAdmin ? "Soy admin " : "No soy admin");
+console.log("isAdmin real value:", isAdmin.value);
+console.log (user);
+
 
 </script>
 
@@ -52,13 +63,17 @@ console.log (units);
             <li v-for="unit in units" :key="unit.id">
                 <!-- Cabecera del tema -->
                 <div v-if="unit.show_in_list"
-                    class="flex items-center justify-between cursor-pointer bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg"
-                    @click="toggleUnit(unit.id)"
+                     class="flex items-center justify-between cursor-pointer bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg"
+                     @click="toggleUnit(unit.id)"
                 >
                     <span class="font-semibold text-gray-700">{{ unit.title }}</span>
                     <span class="text-sm text-gray-600">
             {{ openUnits.includes(unit.id) ? '▲' : '▼' }}
-          </span>
+            <button
+                v-if="isAdmin" class="bg-red-500 hover:bg-red-600 text-white text-xs px-2 py-1 rounded">
+                Ocultar
+            </button>
+                        </span>
                 </div>
 
                 <!-- Lista de ejercicios de ese tema -->
@@ -72,6 +87,7 @@ console.log (units);
                             :key="ex.id"
                             class="hover:bg-gray-100 p-1 rounded"
                         >
+
                             <a href="#" class="text-blue-600 underline text-sm">
                                 {{ ex.list_title }}
                             </a>
@@ -88,6 +104,7 @@ console.log (units);
 .fade-leave-active {
     transition: all 0.25s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;

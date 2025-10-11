@@ -5,7 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', \App\Http\Controllers\MainController::class);
+Route::get('/', \App\Http\Controllers\MainController::class)->name('main');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

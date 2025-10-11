@@ -1,17 +1,26 @@
 <script setup>
 import HeaderTitle from "./Layouts/HeaderTitle.vue";
 import MenuLeft from "./Components/MenuLeft.vue";
+import Login from "./Auth/Login.vue";
 import { ref } from "vue";
 
 const isOpen = ref(true);
 const toggle = () => { isOpen.value = !isOpen.value };
 const {exercices} = defineProps({exercices: Array,units:Array});
+
+
+//Cuando reciba el evento open-login tendré la variabel showLogin a true, si no a false
+const showLogin = ref(false);
+const handleOpenLogin = ()=> {showLogin.value=true;}
+const closeLogin =  ()=> {showLogin.value=false;}
+
+
 </script>
 
 <template>
     <div class="flex flex-col min-h-screen bg-gray-100">
         <!-- Header -->
-        <HeaderTitle title="Prácticas de Programación PHP (Vue + Inertia)" />
+        <HeaderTitle title="Prácticas de Programación PHP" @open-login="handleOpenLogin" />
 
         <!-- Main container -->
         <div class="flex flex-1">
@@ -63,6 +72,31 @@ const {exercices} = defineProps({exercices: Array,units:Array});
         <footer class="bg-yellow-600 text-white text-center p-4">
             Desarrollo de Aplicaciones Web en Entorno Servidor · Profesor Manuel Romero
         </footer>
+
+        <!-- 🟢 Modal overlay for Login -->
+        <div
+            v-if="showLogin"
+            class="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50"
+        >
+            <!-- Smaller modal box -->
+            <div class="bg-white/95 rounded-2xl shadow-2xl w-[380px] p-4 relative flex flex-col items-center">
+                <!-- Header with close button aligned -->
+                <div class="flex w-full justify-between items-center mb-3">
+                    <h2 class="text-lg font-semibold text-gray-800">Login</h2>
+                    <button
+                        @click="closeLogin"
+                        class="text-gray-500 hover:text-black text-xl leading-none"
+                        title="Close"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <!-- Login form -->
+                <Login />
+            </div>
+        </div>
+
     </div>
 </template>
 
