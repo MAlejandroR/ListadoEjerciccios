@@ -21,6 +21,7 @@ class Exercises extends Model
         'description',
         'wiki_url',
         'index',
+        'show_in_list',
         'show_source',
         'units_id',
     ];

@@ -1,17 +1,32 @@
 
-<script setup lang="ts">
+<script setup  lang="ts">
+import {computed, defineProps, toRef} from 'vue';
+import {usePage,router } from "@inertiajs/vue3";
 
 
+const props = defineProps<{title:string}>();
+
+const title = props.title;
+console.log("mirando el título");
+console.log(props.title);
+console.log("// mirando el título");
 //Defino un evento que este componente podrá  enviar al componente padre
 const emit = defineEmits (['open-login']);
 
 //Creo una función que asociaré a un evento que ejecutará y  emitirá el evento open-login a componente padre
 const showLoginForm = ()=>emit('open-login')
 
-defineProps<{title: string}>()
 const goToAdmin=()=>{
     window.location.href='/admin'
 };
+const logout =()=>{
+    router.post(route("logout"))
+
+};
+const page = usePage();
+const user = computed(()=> page.props.auth?.user??{name:"Invitado",  is_admin:false });
+
+
 
 
 </script>
@@ -23,13 +38,21 @@ const goToAdmin=()=>{
         v-bind="$attrs"
     >
         <div class="flex flex-row  items-center">
-        <h1 class=" text-3xl font-bold leading-tight flex-grow">{{ title }}  </h1>
-        <button
-            class="btn btn-secundary"
-            @click="showLoginForm"
-        >
-            Login
-        </button>
+                 <h1 class=" text-3xl font-bold leading-tight flex-grow">{{ title }}  </h1>
+            <span class= "text-sm "v-if="user.is_admin">
+                {{user.name}}
+                <button @click="logout" class="btn btn-sm btn-primary">
+                    Logout
+                </button>
+            </span>
+
+            <button
+                class="btn btn-sm btn-primary"
+                @click="showLoginForm"
+                v-else
+            >
+                Login
+            </button>
         </div>
 
         <!-- Optional: anything extra can be slotted below the title -->

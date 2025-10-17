@@ -19,7 +19,7 @@ class Units extends Model
         'title',
         'description',
         'number',
-        'show_in__list',
+        'show_in_list',
     ];
 
     public function exercises(): HasMany

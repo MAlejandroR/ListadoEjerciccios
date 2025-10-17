@@ -21,6 +21,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^7.1.0",
         "concurrency": "^0.1.4"
     }
 }

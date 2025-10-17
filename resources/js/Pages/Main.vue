@@ -93,7 +93,7 @@ const closeLogin =  ()=> {showLogin.value=false;}
                 </div>
 
                 <!-- Login form -->
-                <Login />
+                <Login @login-success="closeLogin" />
             </div>
         </div>
 
