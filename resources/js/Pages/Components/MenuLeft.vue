@@ -4,6 +4,7 @@ import {ref, computed} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 
 
+const sending = ref(false);
 const page = usePage();
 // Recibimos los props desde Inertia
 const {exercices, units} = defineProps({
@@ -17,16 +18,36 @@ console.log(user)
 //Abierta o cerrada
 const openUnits = ref([]);
 
-const hide_show = async (id) => {
+const hide_show_unit = async (id) => {
+    sending.value = true
 
-    await router.put(route('units.hide_show', id), {}, {
-        preserveScroll: true,
-        onStart: () => console.log(`Ocultando unidad ${id}...`),
-        onSuccess: () => {
-            router.reload({only: [units]})
-        },
-        onError: (err) => console.error('Error ocultando unidad:', err),
-    })
+    try {
+        await router.put(route('units.hide_show', id), {}, {
+            preserveScroll: true,
+            onStart: () => console.log(`Ocultando unidad ${id}...`),
+            onSuccess: () => router.reload({only: ['units']}),
+            onError: (err) => console.error('Error ocultando unidad:', err),
+        });
+    } finally {
+        sending.value = false;
+    }
+    //REalizar una llamada ajax para ocutar el tema
+    //Poner el atribute show_in_list a false
+    //Volver a obtener el listado de temas
+}
+
+const hide_show_exercice = async (id) => {
+    sending.value = true
+    try {
+        await router.put(route('exercices.hide_show', id), {}, {
+            preserveScroll: true,
+            onStart: () => console.log(`Ocultando ejericcios ${id}...`),
+            onSuccess: () => router.reload({only: ['exercices']}),
+            onError: (err) => console.error('Error ocultando ejercicio:', err),
+        });
+    } finally {
+        sending.value = false;
+    }
     //REalizar una llamada ajax para ocutar el tema
     //Poner el atribute show_in_list a false
     //Volver a obtener el listado de temas
@@ -71,13 +92,13 @@ const editUrl = ref("");
 const modalVisible = ref(false);
 
 
-const edit_exercice=(id)=>{
-    editUrl.value= `admin/exercises/${id}/edit`;
-    modalVisible.value=true
+const edit_exercice = (id) => {
+    editUrl.value = `admin/exercises/${id}/edit`;
+    modalVisible.value = true
 }
 
-const closeModal = ()=>{
-    modalVisible.value=false;
+const closeModal = () => {
+    modalVisible.value = false;
     window.location.reload();
 }
 
@@ -101,18 +122,19 @@ const closeModal = ()=>{
                         <!-- Botón si soy admin -->
                         <button
                             :disabled="sending"
-                            @click.stop="hide_show(unit.id)"
-                        v-if="is_admin"
+                            @click.stop="hide_show_unit(unit.id)"
+                            v-if="is_admin"
                             :title="unit.show_in_list ? 'Hide this unit' : 'Show this unit'"
                             class="flex items-center justify-center w-6 h-6 rounded-full text-white"
-                            :class="unit.show_in_list ? 'bg-green-500' : 'bg-red-500 cursor-pointer'"    >
-                        <i :class="unit.show_in_list ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i>
+                            :class="unit.show_in_list ? 'bg-green-500' : 'bg-red-500 cursor-pointer'">
+                            <i :class="unit.show_in_list ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i>
                         </button>
 
-                        <span   class="font-semibold text-gray-700">{{ unit.title }}</span>
+                        <span class="font-semibold text-gray-700">{{ unit.title }}</span>
                     </div>
 
-                    <span class="text-sm bg- hover:bg-gray-800 hover:text-green-500 text-gray-600 cursor-pointer" @click="toggleUnit(unit.id)">
+                    <span class="text-sm bg- hover:bg-gray-800 hover:text-green-500 text-gray-600 cursor-pointer"
+                          @click="toggleUnit(unit.id)">
             {{ openUnits.includes(unit.id) ? '▲' : '▼' }}
           </span>
 
@@ -125,12 +147,39 @@ const closeModal = ()=>{
                         class="ml-6 mt-2 border-l-2 border-gray-300 pl-3 space-y-1"
                     >
                         <li
+
                             v-for="ex in groupedExercices[unit.id]"
                             :key="ex.id"
                             class="hover:bg-gray-100 p-1 rounded"
                         >
-                            <a href="#" class="text-blue-600 underline text-sm">
-                                <i v-if="is_admin" @click="edit_exercice(ex.id)" class="w-4 h-4 fa-solid fa-pen bg-blue-800 text-white space-x-20 "></i>  {{ ex.list_title }}
+                            {{ console.log(`mostra en lista ${ex.show_in_list}-${ex.list_title}-`) }}
+                            <a
+                                v-if="ex.show_in_list || is_admin"
+                                href="#"
+                                class="text-blue-600 underline text-sm"
+                            >
+                                <!-- Botón para ocultar/mostrar ejercicios -->
+                                <button
+                                    :disabled="sending"
+                                    @click.stop="hide_show_exercice(ex.id)"
+                                    v-if="is_admin"
+                                    :title="unit.show_in_list ? 'Hide this unit' : 'Show this unit'"
+                                    class="flex items-center justify-center w-6 h-6 rounded-full text-white"
+                                    :class="unit.show_in_list ? 'bg-green-500' : 'bg-red-500 cursor-pointer'">
+                                    <i :class="unit.show_in_list ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i>
+                                </button>
+                                <i
+                                    v-if="is_admin"
+                                    @click.stop="edit_exercice(ex.id)"
+                                    class="w-4 h-4 fa-solid fa-pen bg-blue-800 text-white space-x-20 mr-1"
+                                ></i>
+
+
+
+
+                                <span :class="{'line-through opacity-60': is_admin && !ex.show_in_list}">
+    {{ ex.list_title }}
+  </span>
                             </a>
                         </li>
                     </ol>

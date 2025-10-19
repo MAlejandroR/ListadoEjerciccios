@@ -24,6 +24,6 @@ class Units extends Model
 
     public function exercises(): HasMany
     {
-        return $this->hasMany(Exercises::class);
+        return $this->hasMany(Exercices::class);
     }
 }

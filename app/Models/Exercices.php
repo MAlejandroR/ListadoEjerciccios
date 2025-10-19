@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Exercises extends Model
+class Exercices extends Model
 {
     use HasFactory;
 
@@ -20,7 +20,7 @@ class Exercises extends Model
         'exercise_title',
         'description',
         'wiki_url',
-        'index',
+        'index_name',
         'show_in_list',
         'show_source',
         'units_id',

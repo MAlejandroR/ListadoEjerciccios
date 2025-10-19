@@ -7,7 +7,7 @@ use App\Filament\Resources\Exercises\Pages\EditExercises;
 use App\Filament\Resources\Exercises\Pages\ListExercises;
 use App\Filament\Resources\Exercises\Schemas\ExercisesForm;
 use App\Filament\Resources\Exercises\Tables\ExercisesTable;
-use App\Models\Exercises;
+use App\Models\Exercices;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,11 +16,11 @@ use Filament\Tables\Table;
 
 class ExercisesResource extends Resource
 {
-    protected static ?string $model = Exercises::class;
+    protected static ?string $model = Exercices::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Exercises';
+    protected static ?string $recordTitleAttribute = 'Exercices';
 
     public static function form(Schema $schema): Schema
     {

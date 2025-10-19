@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\UnitsController;
+use App\Http\Controllers\ExercicesController;
 
 Route::get('/', \App\Http\Controllers\MainController::class)->name('main');
 
@@ -20,6 +21,9 @@ Route::middleware('auth')->group(function () {
 
 Route::put('/units/{unit}/hide_show',[UnitsController::class, 'hide_show'])
     ->middleware(['auth'])->name('units.hide_show');
+
+Route::put('/exercices/{exercice}/hide_show',[ExercicesController::class, 'hide_show'])
+    ->middleware(['auth'])->name('exercices.hide_show');
 
 
 require __DIR__.'/auth.php';

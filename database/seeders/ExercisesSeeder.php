@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Exercises;
+use App\Models\Exercices;
 use App\Models\Units;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -39,12 +39,12 @@ class ExercisesSeeder extends Seeder
                 }
 
 
-                Exercises::create([
+                Exercices::create([
                     'list_title' => $content['datos']['listado'],
                     'exercise_title' => $content['enunciado']['titulo'],
                     'description' => '',
                     'wiki_url' => $content['enunciado']['wiki'] ?? "",
-                    'index:name' => $content['ejecucion']['index'] ?? 'index',
+                    'index_name' => $content['ejecucion']['index'] ?? 'index',
                     'show_source' => false,
                     'units_id' => \App\Models\Units::select('id')->where('number', (int)$content['datos']['tema'])->first()->id
                 ]);

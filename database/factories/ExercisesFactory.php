@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Exercises;
+use App\Models\Exercices;
 use App\Models\Units;
 
 class ExercisesFactory extends Factory
@@ -14,7 +14,7 @@ class ExercisesFactory extends Factory
      *
      * @var string
      */
-    protected $model = Exercises::class;
+    protected $model = Exercices::class;
 
     /**
      * Define the model's default state.
