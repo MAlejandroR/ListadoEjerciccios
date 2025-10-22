@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercices;
+use App\Models\Exercise;
 use Illuminate\Http\Request;
 
 class ExercicesController extends Controller
@@ -62,8 +62,8 @@ class ExercicesController extends Controller
     {
         //
     }
-    public function hide_show(Exercices $exercice){
+    public function hide_show(Exercise $exercice){
         $r= $exercice->update(['show_in_list'=>!$exercice->show_in_list]);
-        return back()->with('success','Exercices Hide Successfully');
+        return back()->with('success','Exercise Hide Successfully');
     }
 }

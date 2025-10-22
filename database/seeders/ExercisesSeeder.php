@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Exercices;
-use App\Models\Units;
+use App\Models\Exercise;
+use App\Models\Unit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -30,8 +30,8 @@ class ExercisesSeeder extends Seeder
                 echo "====================================\n";
 
                 $tema = (int)$content['datos']['tema'];
-                if (Units::select('id')->where('number', $tema)->doesntExist()) {
-                    \App\Models\Units::create([
+                if (Unit::select('id')->where('number', $tema)->doesntExist()) {
+                    \App\Models\Unit::create([
                         'number' => $tema,
                         'title' => 'Tema ' . $content['datos']['tema']
                     ]);
@@ -39,14 +39,14 @@ class ExercisesSeeder extends Seeder
                 }
 
 
-                Exercices::create([
+                Exercise::create([
                     'list_title' => $content['datos']['listado'],
                     'exercise_title' => $content['enunciado']['titulo'],
                     'description' => '',
                     'wiki_url' => $content['enunciado']['wiki'] ?? "",
                     'index_name' => $content['ejecucion']['index'] ?? 'index',
                     'show_source' => false,
-                    'units_id' => \App\Models\Units::select('id')->where('number', (int)$content['datos']['tema'])->first()->id
+                    'units_id' => \App\Models\Unit::select('id')->where('number', (int)$content['datos']['tema'])->first()->id
                 ]);
             }
 

@@ -6,7 +6,7 @@ models:
     number: Integer
     timestamps: true
     relationships:
-      hasMany: Exercices
+      hasMany: Exercise
   Exercises:
     id: bigIncrements
     list_title: string
@@ -17,4 +17,4 @@ models:
     show_source: biikeab default:false
     timestamps: true
     relationships:
-        belongsTo: Units
+        belongsTo: Unit

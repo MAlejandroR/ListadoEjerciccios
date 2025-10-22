@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Units;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class UnitsController extends Controller
@@ -62,7 +62,7 @@ class UnitsController extends Controller
     {
         //
     }
-    public function hide_show(Units $unit){
+    public function hide_show(Unit $unit){
         $r= $unit->update(['show_in_list'=>!$unit->show_in_list]);
         return back()->with('success','Unit Hide Successfully');
     }

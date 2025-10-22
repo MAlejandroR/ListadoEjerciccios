@@ -35,7 +35,9 @@ const hide_show_unit = async (id) => {
     //Poner el atribute show_in_list a false
     //Volver a obtener el listado de temas
 }
+const toggle_code=async (id)=>{
 
+}
 const hide_show_exercice = async (id) => {
     sending.value = true
     try {
@@ -147,42 +149,58 @@ const closeModal = () => {
                         class="ml-6 mt-2 border-l-2 border-gray-300 pl-3 space-y-1"
                     >
                         <li
-
                             v-for="ex in groupedExercices[unit.id]"
                             :key="ex.id"
-                            class="hover:bg-gray-100 p-1 rounded"
+                            class="hover:bg-gray-100 p-1 rounded flex items-center gap-2"
                         >
-                            {{ console.log(`mostra en lista ${ex.show_in_list}-${ex.list_title}-`) }}
+                            <!-- Botón: mostrar/ocultar ejercicio -->
+                            <button
+                                v-if="is_admin"
+                                @click.stop="hide_show_exercice(ex.id)"
+                                :title="ex.show_in_list ? 'Ocultar ejercicio' : 'Mostrar ejercicio'"
+                                class="flex items-center justify-center w-6 h-6 rounded-full text-white transition"
+                                :class="ex.show_in_list ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'"
+                            >
+                                <i :class="ex.show_in_list ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i>
+                            </button>
+
+                            <!-- Botón editar -->
+                            <button
+                                v-if="is_admin"
+                                @click.stop="edit_exercice(ex.id)"
+                                class="flex items-center justify-center w-6 h-6 rounded-full bg-blue-700 hover:bg-blue-800 text-white transition"
+                                title="Editar ejercicio"
+                            >
+                                <i :class="ex.show_source ? 'fa-solid fa-pen text-xs' : 'line_throught fa-solid fa-pen text-xs'"></i>
+                                <i class="fa-solid fa-pen text-xs"></i>
+                            </button>
+
+                            <!-- Botón mostrar/ocultar código (show_source)-->
+                            <button
+                                v-if="is_admin"
+                                @click.stop="toggle_code(ex.id)"
+                                class="flex items-center justify-center w-6 h-6 rounded-full bg-gray-700 hover:bg-gray-800 text-white transition"
+                                title="Ver código fuente"
+                            >
+                                <i :class="['fa-solid fa-laptop-code  text-xs',{'line_through opacity-20':is_admin && !ex.show_source }] "></i>
+                            </button>
+
+                            <!-- Texto con icono árbol (solo decorativo o por tipo de contenido) -->
+                            <i class="fa-solid fa-diagram-project text-gray-200 text-sm"></i>
+
+                            <!-- Título del ejercicio -->
                             <a
                                 v-if="ex.show_in_list || is_admin"
                                 href="#"
-                                class="text-blue-600 underline text-sm"
+                                class="text-blue-600 underline text-sm flex items-center gap-1"
                             >
-                                <!-- Botón para ocultar/mostrar ejercicios -->
-                                <button
-                                    :disabled="sending"
-                                    @click.stop="hide_show_exercice(ex.id)"
-                                    v-if="is_admin"
-                                    :title="unit.show_in_list ? 'Hide this unit' : 'Show this unit'"
-                                    class="flex items-center justify-center w-6 h-6 rounded-full text-white"
-                                    :class="unit.show_in_list ? 'bg-green-500' : 'bg-red-500 cursor-pointer'">
-                                    <i :class="unit.show_in_list ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash'"></i>
-                                </button>
-                                <i
-                                    v-if="is_admin"
-                                    @click.stop="edit_exercice(ex.id)"
-                                    class="w-4 h-4 fa-solid fa-pen bg-blue-800 text-white space-x-20 mr-1"
-                                ></i>
-
-
-
-
-                                <span :class="{'line-through opacity-60': is_admin && !ex.show_in_list}">
-    {{ ex.list_title }}
-  </span>
+            <span :class="{'line-through opacity-60': is_admin && !ex.show_in_list}">
+                {{ ex.list_title }}
+            </span>
                             </a>
                         </li>
                     </ol>
+
                 </transition>
             </li>
         </ul>

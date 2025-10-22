@@ -104,6 +104,7 @@ php artisan serve
 npm run dev
 ```
 
+
 6.- Accede en tu navegador a http://localhost:8000
 
 ** Uso de la aplicación
@@ -122,11 +123,20 @@ Panel para gestionar temas y ejercicios.
 
 Posibilidad de sincronizar o importar ejercicios desde ficheros .ini.
 
-***  Autenticación
+
+
+
+
+### Diagrama de clases
+En vue se utilizan los siguientes componentes
+
+![./documentacion/da](./documentacion/diagramas/Clases_Vue_Main.png)
+
+###  Autenticación
 El sistema de login está integrado mediante Laravel Breeze y se presenta en forma de ventana modal sobre la SPA principal.
 Mientras el modal está visible, el fondo se mantiene ligeramente oscurecido y difuminado (efecto backdrop-blur).
 
-***  Rutas principales
+###  Rutas principales
 Ruta	Descripción	Middleware
 /	Página principal con el listado de ejercicios.	Pública
 /login	Formulario de acceso.	Invitado

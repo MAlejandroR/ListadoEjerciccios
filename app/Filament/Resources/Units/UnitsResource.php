@@ -7,7 +7,7 @@ use App\Filament\Resources\Units\Pages\EditUnits;
 use App\Filament\Resources\Units\Pages\ListUnits;
 use App\Filament\Resources\Units\Schemas\UnitsForm;
 use App\Filament\Resources\Units\Tables\UnitsTable;
-use App\Models\Units;
+use App\Models\Unit;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,11 +16,11 @@ use Filament\Tables\Table;
 
 class UnitsResource extends Resource
 {
-    protected static ?string $model = Units::class;
+    protected static ?string $model = Unit::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Units';
+    protected static ?string $recordTitleAttribute = 'Unit';
 
     public static function form(Schema $schema): Schema
     {

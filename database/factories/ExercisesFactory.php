@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Exercices;
-use App\Models\Units;
+use App\Models\Exercise;
+use App\Models\Unit;
 
 class ExercisesFactory extends Factory
 {
@@ -14,7 +14,7 @@ class ExercisesFactory extends Factory
      *
      * @var string
      */
-    protected $model = Exercices::class;
+    protected $model = Exercise::class;
 
     /**
      * Define the model's default state.
@@ -28,7 +28,7 @@ class ExercisesFactory extends Factory
             'wiki_url' => fake()->word(),
             'index:name' => fake()->word(),
             'show_source' => fake()->word(),
-            'units_id' => Units::factory(),
+            'units_id' => Unit::factory(),
         ];
     }
 }

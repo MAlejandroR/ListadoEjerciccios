@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Units extends Model
+class Unit extends Model
 {
     use HasFactory;
 
@@ -24,6 +24,6 @@ class Units extends Model
 
     public function exercises(): HasMany
     {
-        return $this->hasMany(Exercices::class);
+        return $this->hasMany(Exercise::class);
     }
 }
