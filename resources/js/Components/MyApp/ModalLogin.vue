@@ -1,7 +1,8 @@
 <script setup>
 
 import Login from "@/Pages/Auth/Login.vue";
-import { ref } from "vue";
+import { ref,toRef } from "vue";
+
 
 
 
@@ -9,7 +10,7 @@ import { ref } from "vue";
 //Leo los props que vienen de Main
 const props = defineProps({show_login: Boolean});
 
-const show_login = ref(props.show_login)
+const show_login = toRef(props, "show_login")
 
 //Creo un mensaje para enviar a Main
 const emit = defineEmits(["close"]);
@@ -39,7 +40,7 @@ const close=()=>emit("close");
                 </div>
 
                 <!-- Login form -->
-                <Login @login-success="closeLogin"/>
+                <Login @login-success="close"/>
             </div>
         </div>
     </Teleport>

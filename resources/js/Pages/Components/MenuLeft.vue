@@ -110,7 +110,6 @@ const closeModal = () => {
 <template>
     <aside class="w-72 bg-gray-100 p-4 rounded-xl shadow overflow-y-auto">
         <h2 class="text-md font-bold mb-3 text-gray-800">📘 Listado de prácticas</h2>
-
         <ul class="space-y-3">
             <li v-for="unit in units" :key="unit.id">
                 <!-- Cabecera del tema -->

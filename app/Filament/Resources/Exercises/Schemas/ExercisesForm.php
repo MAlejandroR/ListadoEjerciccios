@@ -26,10 +26,11 @@ class ExercisesForm
                 TextInput::make('wiki_url')
                     ->url(),
 
-                TextInput::make('index')
+                TextInput::make('index_name')
                     ->required()
                     ->default('index'),
-
+                TextInput::make('folder_name')
+                    ->label("Nombre de la carpeta"),
                 Toggle::make('show_source')
                     ->label('Mostrar código fuente')
                     ->default(false),

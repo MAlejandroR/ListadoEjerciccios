@@ -12,9 +12,9 @@ class MainController extends Controller
     public function __invoke(Request $request)
     {
 //        $exercices =Exercise::all();
-        $exercices =Exercise::orderBy('units_id')->get();
+        $exercises =Exercise::orderBy('units_id')->get();
         $units = Unit::all();
 
-        return inertia('Main', compact('exercices', 'units'));
+        return inertia('Main', compact('exercises', 'units'));
     }
 }

@@ -19,6 +19,8 @@ class UnitsForm
                 TextInput::make('number')
                     ->required()
                     ->numeric(),
+                TextInput::make('folder_name')
+                    ->label ("Carpeta del tema")
             ]);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Units\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -27,6 +28,8 @@ class UnitsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('folder_name')
+                    ->label ("Carpeta del tema")
             ])
             ->filters([
                 //

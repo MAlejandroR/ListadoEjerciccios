@@ -173,6 +173,18 @@ Fecha	Descripción
 (pendiente)	Implementar CRUD de temas y ejercicios desde el panel.
 
 
+
+### Librerías utilizadas
+#### FontAwesome
+```bash
+npm install @fortawesome/fontawesome-svg-core \
+@fortawesome/free-solid-svg-icons \
+@fortawesome/vue-fontawesome
+```
+
+* Para usarlo, directamente con el componente 
+
+
 ** 👨‍💻 Autor
 Profesor Manuel Romero
 Departamento de Informática — CPIFP Los Enlaces (Zaragoza, España)

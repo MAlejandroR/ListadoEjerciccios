@@ -24,6 +24,7 @@ class Exercise extends Model
         'show_in_list',
         'show_source',
         'units_id',
+        'folder_name'
     ];
 
     /**
