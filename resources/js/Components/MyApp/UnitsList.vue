@@ -1,12 +1,15 @@
 <script setup>
-import { defineEmits} from "vue";
+import {defineEmits, ref} from "vue";
 import UnitItem from "@/Components/MyApp/UnitItem.vue";
 
 
-const props = defineProps({groupsExercises: Object, units: Object})
+const props = defineProps({groupsExercises: Object, units: Array})
 
-const units = props.units;
-const groupsExercises = props.groupsExercises;
+
+console.log("UntisList");
+console.log("grupo de ejercicios");
+console.log(props.groupsExercises);
+
 
 //Recojo el evento que está propagando UnitItem que recibe de ExerciseItem y lo propago a Sidebar
 
@@ -22,7 +25,7 @@ const onStatement =(exercise)=>emit("statement", exercise);
 <template>
 
     <div v-for="unit in units" :key="unit.id">
-        <UnitItem :unit="unit" :exercises="groupsExercises[unit.id]??[]" @statement="onStatement" />
+        <UnitItem :unit="unit" :exercises="groupsExercises[unit.id] ?? []" @statement="onStatement" />
     </div>
 </template>
 

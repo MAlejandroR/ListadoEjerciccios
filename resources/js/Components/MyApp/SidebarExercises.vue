@@ -8,9 +8,7 @@ const props = defineProps({
     exercises: Array,
 });
 
-const units = ref(props.units);
 
-const exercises = ref (props.exercises);
 
 const isOpen = ref(false);
 //Variable para controlar el tiempo de renderizado
@@ -19,12 +17,12 @@ const showContent = ref(false);
 
 
 
-//Un array con los ejercicios de cada tema agrupados
+//Un objeto de arrays con los ejercicios de cada tema agrupados
 const groupedExercises = computed(() => {
     const groups = {};
-    for (const ex of exercises.value ?? []) {
-        if (!groups[ex.units_id]) groups[ex.units_id] = [];
-        groups[ex.units_id].push(ex);
+    for (const ex of props.exercises ?? []) {
+        if (!groups[ex.unit_id]) groups[ex.unit_id] = [];
+        groups[ex.unit_id].push(ex);
     }
     return groups;
 });

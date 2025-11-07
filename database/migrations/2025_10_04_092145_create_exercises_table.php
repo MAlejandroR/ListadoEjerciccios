@@ -18,9 +18,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('wiki_url')->nullable();
             $table->string('index_name')->default('index');
+            $table->string('folder_name')->nullable();
             $table->boolean('show_source')->default(false);
             $table->boolean('show_in_list')->default(true);
-            $table->foreignId('units_id');
+            $table->foreignId('unit_id');
             $table->timestamps();
         });
     }

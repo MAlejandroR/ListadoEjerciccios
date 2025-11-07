@@ -8,8 +8,7 @@ import { ref, defineEmits } from "vue";
 
 const props = defineProps({ units: Array, exercises: Array });
 
-const units = ref(props.units);
-const exercises = ref(props.exercises);
+
 
 const show_login = ref(false);
 const open_login = () => (show_login.value = true);
@@ -21,11 +20,14 @@ const selectedExercise = ref(null);
 
 const showStatement = (exercise)=>{
     selectedExercise.value = exercise
+    //Seleccionar al campo folder_name de units where unit_id = exercise_units_id
+    //Añadir ese valor a cada registro
+  //  for ($exercise )
+
 
     console.log("En main.vue");
     console.log("Viendo el valor recibido y propagado por eventos desde ExerciseItem");
     console.log("Selected exercise:", exercise);
-
 
 };
 

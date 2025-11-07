@@ -11,9 +11,10 @@ const props = defineProps({
 // Construimos la URL de forma reactiva
 const iframeSrc = computed(() => {
     if (!props.exercise) return null;
-    const { id, index_name} = props.exercise;
-    const units_id = props.exercise.units_id;
-    return `https://web.infenlaces.com/dwes/exercises/T${units_id}/${id}/${index_name}`;
+    const index_name = props.exercise.index_name ??"";
+    const folder_name_unit= props.exercise.unit?.folder_name ??"";
+    const folder_name_exercise = props.exercise?.folder_name ??"";
+    return `/exercises/${folder_name_unit}/${folder_name_exercise}/${index_name}`;
 });
 
 
@@ -24,6 +25,7 @@ watch  (
             console.log("En ExecutionExercise");
             console.log("A canbiado un valor");
             console.log(`Nueva url ${NewValue}`);
+            console.log(props.exercise)
         },
         {immediate: true}
 );

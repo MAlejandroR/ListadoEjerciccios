@@ -30,6 +30,8 @@ class UnitsTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('folder_name')
                     ->label ("Carpeta del tema")
+
+
             ])
             ->filters([
                 //

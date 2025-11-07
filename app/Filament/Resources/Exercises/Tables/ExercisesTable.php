@@ -33,7 +33,7 @@ class ExercisesTable
                 ToggleColumn::make('show_in_list')
                     ->label('Visible en listado')
                     ->default(true),
-                TextColumn::make('units.title')
+                TextColumn::make('unit.title')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

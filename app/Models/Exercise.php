@@ -39,7 +39,7 @@ class Exercise extends Model
         ];
     }
 
-    public function units(): BelongsTo
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
     }

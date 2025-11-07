@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('units', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('folder_name')->nullable();
             $table->text('description')->nullable();
-            $table->integer('number');
             $table->boolean('show_in_list')->default(true);
             $table->timestamps();
         });

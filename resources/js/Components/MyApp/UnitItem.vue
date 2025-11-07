@@ -5,7 +5,7 @@ import ExerciseItem from "@/Components/MyApp/ExerciseItem.vue";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {router, usePage} from "@inertiajs/vue3";
 
-const props = defineProps({unit: Object, exercises: Object})
+const props = defineProps({unit: Object, exercises: Array})
 
 
 const page = usePage();
@@ -22,8 +22,7 @@ const admin_exercise=(id)=>{
 
 
 
-const unit = props.unit;
-const exercises = props.exercises;
+
 
 
 const isOpen = ref(false);
@@ -36,7 +35,7 @@ const emit = defineEmits(['statement']);
 const onStatement = (exercise)=>emit('statement', exercise);
 
 console.log("En UnitItem");
-console.log(`Ejercicios: ${exercises}`);
+console.log(`Ejercicios: ${props.exercises}`);
 watch(
     isOpen,
         (newValue)=>{
@@ -74,14 +73,13 @@ watch(
                     title="Editar en panel de administración"
                 ></i>
             </h2>
-            <ol class="list-decimal list-inside text-gray-700 space-y-1">
+             <ol v-if="isOpen" class="list-decimal list-inside text-gray-700 space-y-1">
                 <li
                     v-for="exercise in exercises"
                     :key="exercise.id"
                     class="px-3 py-2 rounded-md bg-gray-50 shadow-sm
            hover:bg-gray-100 hover:shadow-md
-           transition-all duration-200 inline-flex w-full" v-if="isOpen"
-                >
+           transition-all duration-200 inline-flex w-full">
                     {{console.log(exercise.list_title)}}
                     <ExerciseItem :exercise="exercise" @statement="onStatement"/>
 
