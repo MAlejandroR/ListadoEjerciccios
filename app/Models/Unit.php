@@ -18,8 +18,9 @@ class Unit extends Model
     protected $fillable = [
         'title',
         'description',
-        'number',
+        'folder_name',
         'show_in_list',
+        'number',
     ];
 
     public function exercises(): HasMany

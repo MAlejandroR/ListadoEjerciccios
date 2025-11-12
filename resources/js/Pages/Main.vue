@@ -1,23 +1,40 @@
-<script setup>
+<script setup lang="ts">
 import SidebarExercises from "@/Components/MyApp/SidebarExercises.vue";
 import HeaderTitle from "@/Pages/Layouts/HeaderTitle.vue";
-import StatementExercise from "@/Components/MyApp/StatementExercise.vue";
-import ExecutionExercise from "@/Components/MyApp/ExecutionExercise.vue";
+import StatementExercise from "@/Components/MyApp/Main/StatementExercise.vue";
+import ExecutionExercise from "@/Components/MyApp/Main/ExecutionExercise.vue";
 import ModalLogin from "@/Components/MyApp/ModalLogin.vue";
+import ModalRegister from "@/Components/MyApp/ModalRegister.vue";
 import { ref, defineEmits } from "vue";
+import type {Unit} from "@/Components/MyApp/types/Unit";
+import type {Exercise} from "@/Components/MyApp/types/Exercise";
+import type {Course} from "@/Components/MyApp/types/Course";
 
-const props = defineProps({ units: Array, exercises: Array });
 
 
 
+
+// const props = defineProps({ units: Array, exercises: Array });
+const props=defineProps<{units:Unit[], exercises:Exercise[], courses:Course[], practiced:number[]}>()
+
+
+//Gestión de los formularios emergentes para login y register
 const show_login = ref(false);
-const open_login = () => (show_login.value = true);
+const open_login = () => (show_login.
+value = true);
 const close_login = () => (show_login.value = false);
+
+
+const show_register = ref(false);
+const open_register = () => (show_register.value = true);
+const close_register = () => (show_register.value = false);
 
 //Para ejecutar al recibir el evento de mostrar un enunciado
 //Creamos la variable reactiva que va a recibir el valor de ejercicio propagado por eventos desde ExerciseItem
-const selectedExercise = ref(null);
+const selectedExercise = ref<Exercise|null>(null);
 
+//Función que viene de un emit desde:
+// ExerciseItem => UnitItem=>UnitList
 const showStatement = (exercise)=>{
     selectedExercise.value = exercise
     //Seleccionar al campo folder_name de units where unit_id = exercise_units_id
@@ -46,7 +63,8 @@ console.log(selectedExercise);
         class="flex flex-col min-h-screen bg-gray-100"
     >
         <!-- ✅ Header fixed on top -->
-        <HeaderTitle title="Listado de Ejercicios de PHP" @open-login="open_login" />
+        <HeaderTitle title="Listado de Ejercicios de PHP"
+                     @open-register ="open_register" @open-login="open_login" />
 
         <!-- ✅ Main content fills available space -->
         <div class="flex flex-1 overflow-hidden">
@@ -54,6 +72,7 @@ console.log(selectedExercise);
             <SidebarExercises
                 :units="units"
                 :exercises="exercises"
+                :practiced="practiced"
                 class=" border-r border-gray-200 overflow-y-auto"
                 @statement="showStatement"
             />
@@ -82,6 +101,8 @@ console.log(selectedExercise);
 
         <!-- Modal -->
         <ModalLogin  :show_login="show_login" @close="close_login" />
+        <ModalRegister :courses="props.courses" :show_register="show_register"
+                       @close_register="close_register" />
     </div>
 </template>
 

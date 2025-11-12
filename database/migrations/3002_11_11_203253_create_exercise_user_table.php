@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('exercise_user', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('number');
-            $table->string('folder_name')->nullable();
-            $table->text('description')->nullable();
-            $table->boolean('show_in_list')->default(true);
+            $table->foreignId('exercise_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->boolean("practiced")->default(false);
             $table->timestamps();
+            $table->unique(["exercise_id", "user_id"]);
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('exercise_user');
     }
 };

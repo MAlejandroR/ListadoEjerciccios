@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import {ref, defineProps, computed} from "vue";
 import {router, usePage} from "@inertiajs/vue3";
 
 
 //Para ver si soy o no admin
 const page = usePage();
-const is_admin = computed (()=>page.props.auth.user?.is_admin===true);
+const role = computed (()=>page.props.auth.role);
 
 const admin_exercise=(id)=>{
     router.visit(`/admin/exercises/${id}/edit`);
@@ -14,7 +14,21 @@ const admin_exercise=(id)=>{
 
 
 
-const props = defineProps({exercise:Object, isOpen:Boolean})
+const props = defineProps({exercise:Object, isOpen:Boolean, practiced:Array})
+
+const isPracticed = computed(() =>
+    props.practiced?.includes(props.exercise.id)
+);
+
+const togglePracticed = (event: Event) => {
+    console.log ("Cambiando valor en servidor");
+    const target = event.target as HTMLInputElement;
+    router.post(
+        route("exercises.practice", props.exercise.id),
+        { practiced: target.checked },
+        { preserveScroll: true, preserveState: true }
+    );
+};
 
 const exercise = props.exercise;
 
@@ -37,13 +51,24 @@ const sendStatement = ()=>{
            transition-all duration-200"
         @click="sendStatement"
     >
+        <input
+            v-if="role === 'student'"
+            type="checkbox"
+            :checked="isPracticed"
+            class="checkbox checkbox-secondary scale-75"
+            @click.stop
+            @change="togglePracticed"
+        />
+
         {{ exercise.exercise_title }}
         <i
-            v-if="is_admin"
+            v-if="role==='admin'"
             @click.stop="admin_exercise(exercise.id)"
             class="fa-solid fa-user-tie text-blue-600 hover:text-blue-800 cursor-pointer"
             title="Editar en panel de administración"
         ></i>
+
+
     </div>
 <!--            <span class="italic text-sm text-gray-500">{{exercise.exercise_title}}</span>-->
 </template>

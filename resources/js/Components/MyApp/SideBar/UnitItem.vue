@@ -1,11 +1,11 @@
 <script setup>
 
 import {ref, defineProps, defineEmits, computed, watch} from "vue";
-import ExerciseItem from "@/Components/MyApp/ExerciseItem.vue";
+import ExerciseItem from "@/Components/MyApp/SideBar/ExerciseItem.vue";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {router, usePage} from "@inertiajs/vue3";
 
-const props = defineProps({unit: Object, exercises: Array})
+const props = defineProps({unit: Object, exercises: Array, practiced:Array})
 
 
 const page = usePage();
@@ -33,9 +33,9 @@ const toggle = () => {
 //Recojo el evento generado por ExercisesItem y lo propago
 const emit = defineEmits(['statement']);
 const onStatement = (exercise)=>emit('statement', exercise);
-
-console.log("En UnitItem");
-console.log(`Ejercicios: ${props.exercises}`);
+//
+// console.log("En UnitItem");
+// console.log(`Ejercicios: ${props.exercises}`);
 watch(
     isOpen,
         (newValue)=>{
@@ -81,7 +81,7 @@ watch(
            hover:bg-gray-100 hover:shadow-md
            transition-all duration-200 inline-flex w-full">
                     {{console.log(exercise.list_title)}}
-                    <ExerciseItem :exercise="exercise" @statement="onStatement"/>
+                    <ExerciseItem :practiced="practiced" :exercise="exercise" @statement="onStatement"/>
 
 
                 </li>

@@ -27,6 +27,12 @@ class Exercise extends Model
         'folder_name'
     ];
 
+    public function practiceBy(){
+        return $this->belongsToMany(User::class)
+            ->withPivot("practiced")
+            ->withTimestamps();
+    }
+
     /**
      * Get the attributes that should be cast.
      *

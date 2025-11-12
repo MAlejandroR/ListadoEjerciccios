@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('units', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->integer('number');
-            $table->string('folder_name')->nullable();
-            $table->text('description')->nullable();
-            $table->boolean('show_in_list')->default(true);
+            $table->string('name');
+            $table->string('teacher');
+            $table->string('directory');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('units');
+        Schema::dropIfExists('courses');
     }
 };

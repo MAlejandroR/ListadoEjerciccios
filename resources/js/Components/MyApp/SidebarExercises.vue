@@ -1,12 +1,11 @@
-<script setup>
+<script setup lang="ts">
 
-import UnitsList from "@/Components/MyApp/UnitsList.vue";
+import UnitsList from "@/Components/MyApp/SideBar/UnitsList.vue";
 import {ref, watch, computed, defineEmits} from "vue";
+import {Unit} from "@/Components/MyApp/types/Unit";
+import {Exercise} from "@/Components/MyApp/types/Exercise";
 
-const props = defineProps({
-    units: Array,
-    exercises: Array,
-});
+const props = defineProps<{units:Unit[],exercises:Exercise[], practiced:number[] }>();
 
 
 
@@ -71,7 +70,7 @@ watch (isOpen, (open)=>{
         <!-- Contenido del menú, solo visible si isOpen -->
         <div v-if="showContent" class="mt-4">
             <h2 class="text-2xl font-bold mb-3 text-gray-800">📘 Listado de prácticas</h2>
-            <UnitsList :groupsExercises="groupedExercises" :units="units" @statement="onStatement"/>
+            <UnitsList :practiced="practiced" :groupsExercises="groupedExercises" :units="units" @statement="onStatement"/>
         </div>
 
     </aside>

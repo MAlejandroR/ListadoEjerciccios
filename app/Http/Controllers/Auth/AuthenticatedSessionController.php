@@ -53,6 +53,11 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+        return redirect()->route('main');
+        $destino = $request->session()->pull('url.intended',route('main'));
+
+        return redirect()->intended($destino);
+
 
         return redirect('/');
     }

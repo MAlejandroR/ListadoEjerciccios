@@ -25,5 +25,6 @@ Route::put('/units/{unit}/hide_show',[UnitsController::class, 'hide_show'])
 Route::put('/exercices/{exercice}/hide_show',[ExercicesController::class, 'hide_show'])
     ->middleware(['auth'])->name('exercices.hide_show');
 
+Route::post("/exercises/{exercise}/practice",\App\Http\Controllers\ExercisePracticeController::class )->name("exercises.practice");
 
 require __DIR__.'/auth.php';

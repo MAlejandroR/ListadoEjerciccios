@@ -7,6 +7,8 @@ use App\Models\Unit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use function Symfony\Component\String\b;
+use function Termwind\parse;
 
 
 //TODO revisar el código: pendiente
@@ -24,87 +26,67 @@ class ExercisesSeeder extends Seeder
      */
     public function run(): void
     {
-        $dirs = Storage::drive("public")->directories('exercises');
-       //Recorremos el directorio y aquellos que tengan ini
-        //Leo los datos y creo una unidad
-        foreach ($dirs as $dir) {
-            $name = basename($dir);
-            $ini = "exercises/$name/$name.ini";
-            if (Storage::disk("public")->exists($ini)) {
-                $full_path = Storage::disk("public")->path($ini);
-                $data = parse_ini_file($full_path, true);
-                $unit= Unit::create([
-                    "title" => $data["title"],
-                    "description" => $data["description"],
-                    "show_in_list" => $data["show_in_list"]==1?true:false,
-                ]);
-                }
-//Ahora recorreo cada directorio y creo ejercicios
-            $exercises = Storage::drive("public")->directories($dir);
-            foreach ($exercises as $dir_exercise) {
-                var_dump($dir_exercise);
-                $files = Storage::drive("public")->files($dir_exercise);
-                $ini_file= array_filter($files,fn($file)=>str_ends_with($file, "ini"));
-                var_dump($ini_file);
-                if (count($ini_file)==1) {
-                    var_dump($ini_file);
-                    $ini= reset($ini_file);
-                    //Obtengo el ini del ejercicio y leo su contenido
-                    $full_path = Storage::disk("public")->path($ini);
-                    $data = parse_ini_file($full_path, true);
+        //Recorremos los directorios que son los temas o unidades (/exercises(
+        $dir_units = Storage::disk("public")->directories("exercises");
 
-                    Exercise::create([
-                        'list_title' => $data['datos']['listado'],
-                        'exercise_title' => $data['enunciado']['titulo'],
-                        'description' => '',
-                        'wiki_url' => $data['enunciado']['wiki'] ?? "",
-                        'index_name' => $data['ejecucion']['index'] ?? 'index',
-                        'show_source' => false,
-                        'unit_id' => $unit->id,
-                        'folder_name' => $dir_exercise
-                    ]);
-                }
-            }
+        //Pra cada unidad si hay ini y es correcto
+        //Añado un tema en la base de datos con los valores del ini
+        foreach ($dir_units as $unit) {
+            //Cada ejercicio si tiene ini y es correcto lo doy de alta en la base de datos
+            $unit_id = $this->add_unit_database($unit);
+
+            if (!$unit_id) continue;
+            $this->add_exercise_database_if_ini($unit, $unit_id);
+        }
+    }
+
+    private function add_unit_database(string $unit):null|int
+    {
+        $unit_dir =basename($unit);
+        $path_base= Storage::disk("public")->path($unit);
+        $init_file="$path_base/$unit_dir.ini";
+        $data = @parse_ini_file($init_file, true);
+
+
+        if (!is_array($data)) return null;
+        $unit= Unit::create([
+            "title" => $data["title"],
+            "description" => $data["description"],
+            "show_in_list" => $data["show_in_list"]==1?true:false,
+            "folder_name" => $unit_dir,
+            'number' => $data["number"],
+        ]);
+        return $unit->id;
         }
 
+        //Para cada directorio de unidad
+    //Leo los ejercicios que hay
+    //Si tienen ini file, los añado en la base de datos
+    private function add_exercise_database_if_ini(string $unit, int $unit_id)
+    {
 
+        //OBtener todos los fichero de una carpeta
+        $exercises_dir = Storage::disk("public")->directories($unit);
+        sort($exercises_dir);
+        foreach ($exercises_dir as $exercise) {
+            $dir_name = basename($exercise);
+            if (!Storage::drive("public")->exists("$exercise/$dir_name.ini"))
+                continue;
+            $path =Storage::drive("public")->path("$exercise");
+            $ini_file= "$path/$dir_name.ini";
+            $data= @parse_ini_file($ini_file, true);
+            if (!is_array($data)) continue;
+            Exercise::create([
+                'list_title' => $data['datos']['listado'],
+                'exercise_title' => $data['enunciado']['titulo'],
+                'description' => '',
+                'wiki_url' => $data['enunciado']['wiki'] ?? "",
+                'index_name' => $data['ejecucion']['index'] ?? 'index',
+                'show_source' => false,
+                'unit_id' => $unit_id,
+                'folder_name' => basename($dir_name)
+            ]);
 
-
-//        $files = scandir(public_path("/storage/ficheros_ini"));
-//        foreach ($files as $file) {
-//            if (str_ends_with($file, '.ini')) {
-//
-//                $content = parse_ini_file(public_path("/storage/ficheros_ini/$file"), true);
-//                /*$content:
-//
-//             ] // database/seeders/ExercisesSeeder.php:22
-//                */
-//                dump($file);
-//                dump($content);
-//                echo "====================================\n";
-//
-//                $tema = (int)$content['datos']['tema'];
-//                if (Unit::select('id')->where('number', $tema)->doesntExist()) {
-//                    \App\Models\Unit::create([
-//                        'number' => $tema,
-//                        'title' => 'Tema ' . $content['datos']['tema']
-//                    ]);
-//
-//                }
-//
-//
-//                Exercise::create([
-//                    'list_title' => $content['datos']['listado'],
-//                    'exercise_title' => $content['enunciado']['titulo'],
-//                    'description' => '',
-//                    'wiki_url' => $content['enunciado']['wiki'] ?? "",
-//                    'index_name' => $content['ejecucion']['index'] ?? 'index',
-//                    'show_source' => false,
-//                    'units_id' => \App\Models\Unit::select('id')->where('number', (int)$content['datos']['tema'])->first()->id
-//                ]);
-//            }
-//
-//        }
-//        //
     }
+}
 }

@@ -1,12 +1,14 @@
-<script setup>
-import {computed, watch} from "vue";
+<script setup lang="ts">
+import {computed, watch,ref} from "vue";
+import NoWikiCard from "@/Components/MyApp/Graphics/NoWikiCard.vue";
+import type {Exercise} from "@/Components/MyApp/types/Exercise";
+import type {WikiAvailable} from "@/Components/MyApp/types/WikiAvailable";
 
-const props = defineProps({
-    exercise: {
-        type: Object,
-        default: null
-    }
-});
+
+const props = defineProps<{exercise:Exercise|null}>();
+const wikiAvailable = ref<WikiAvailable>("no-selection");
+
+
 
 // 🧹 Limpiar URL por si viene con comillas o atributos extra
 function cleanWikiUrl(raw) {
@@ -29,21 +31,37 @@ const wikiUrl = computed(() => {
 });
 
 // 👀 watch: se ejecuta cada vez que cambia el ejercicio
+const checkUrlWiki = async (url)=>{
+    try{
+        const response = await fetch(url, {method:"HEAD"});
+        wikiAvailable.value = "ok";
+    }catch(error){
+        wikiAvailable.value = "wiki-error";
+        console.warn(`⚠️ Error checking URL: ${url}`, error);
+
+    }
+}
+
+
 watch(
     () => props.exercise,
-    (newValue) => {
+    async(newValue, oldValue)=> {
         console.log("🔁 props.exercise ha cambiado:");
         console.log(newValue ?? "Sin valor recibido");
+    if (!newValue?.wiki_url){
+        wikiAvailable.value = false
+        return
+    }
+    await checkUrlWiki(newValue.wiki_url)
     },
-    { immediate: true }
+    {immediate: true}
 );
-
 
 
 // const wiki_url = props.exercise.wiki_url
 console.log("En StatementExercise");
 console.log("Recibiendo el ejercicio propagado desde ExerciseItem");
-console.log(wikiUrl??"Sin valor wiki_url");
+console.log(wikiUrl ?? "Sin valor wiki_url");
 
 </script>
 
@@ -51,7 +69,7 @@ console.log(wikiUrl??"Sin valor wiki_url");
     <div class="text-center">
         <!-- ✅ Solo muestra el iframe si wikiUrl tiene texto -->
         <iframe
-            v-if="wikiUrl && wikiUrl.length > 0"
+            v-if="wikiUrl && wikiAvailable==='ok'"
             :src="wikiUrl"
             width="100%"
             height="400"
@@ -59,11 +77,11 @@ console.log(wikiUrl??"Sin valor wiki_url");
         ></iframe>
 
         <!-- ❌ Si no hay URL -->
-        <div v-else class="italic text-gray-700 p-4">
-            Aquí iría el enunciado.<br />
-            No hay <code>wiki_url</code> disponible para este ejercicio.
-        </div>
 
+        <NoWikiCard
+            v-else
+            :mode=wikiAvailable
+        />
         <!-- 📜 Descripción opcional -->
         <p v-if="props.exercise?.description" class="mt-2 text-gray-600">
             {{ props.exercise.description }}

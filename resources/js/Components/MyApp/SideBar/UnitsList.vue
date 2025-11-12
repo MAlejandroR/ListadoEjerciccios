@@ -1,9 +1,9 @@
 <script setup>
 import {defineEmits, ref} from "vue";
-import UnitItem from "@/Components/MyApp/UnitItem.vue";
+import UnitItem from "@/Components/MyApp/SideBar/UnitItem.vue";
 
 
-const props = defineProps({groupsExercises: Object, units: Array})
+const props = defineProps({groupsExercises: Object, units: Array, practiced:Array})
 
 
 console.log("UntisList");
@@ -25,7 +25,7 @@ const onStatement =(exercise)=>emit("statement", exercise);
 <template>
 
     <div v-for="unit in units" :key="unit.id">
-        <UnitItem :unit="unit" :exercises="groupsExercises[unit.id] ?? []" @statement="onStatement" />
+        <UnitItem :practiced="practiced" :unit="unit" :exercises="groupsExercises[unit.id] ?? []" @statement="onStatement" />
     </div>
 </template>
 

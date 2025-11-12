@@ -28,7 +28,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -41,11 +41,26 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $user->assignRole('student');
+
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        $request->session()->regenerate();
+
+        $destino = $request->session()->pull('url.intended',route('main'));
+
+        return redirect()->intended($destino);
+
+
+
+//        return Inertia::render('Main');
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'Usuario registrado correctamente',
+            'user' => Auth::user(),
+        ]);
     }
 }

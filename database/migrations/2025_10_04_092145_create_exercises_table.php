@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('folder_name')->nullable();
             $table->boolean('show_source')->default(false);
             $table->boolean('show_in_list')->default(true);
-            $table->foreignId('unit_id');
+            $table->foreignId('unit_id')->constrained();
             $table->timestamps();
         });
     }
