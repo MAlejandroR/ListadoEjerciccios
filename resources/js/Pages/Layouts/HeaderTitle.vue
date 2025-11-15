@@ -1,67 +1,51 @@
 <script setup lang="ts">
-import {computed, defineProps, toRef} from 'vue';
-import {usePage, router} from "@inertiajs/vue3";
 
-
-const props = defineProps<{ title: string }>();
-
-const title = props.title;
-console.log("mirando el título");
-console.log(props.title);
-console.log("// mirando el título");
-//Defino un evento que este componente podrá  enviar al componente padre
-const emit = defineEmits(['open-login', 'open-register']);
-
-//Creo una función que asociaré a un evento que ejecutará y  emitirá el evento open-login a componente padre
-const showLoginForm = () => emit('open-login')
-const showRegisterForm = () => emit('open-register')
-
-const goToAdmin = () => {
-    window.location.href = '/admin'
-};
-const logout = () => {
-    router.post(route("logout"))
-
-};
-const page = usePage();
-const user = computed(() => page.props.auth?.user);
-
+const props = defineProps <{title:string}>()
 
 </script>
 
 <template>
-    <!-- Any attributes you pass (like extra classes) will land on this root header via $attrs -->
-    <header
-        class="bg-red-700 text-white text-3xl font-bold text-center p-6 uppercase"
-        v-bind="$attrs"
-    >
-        <div class="flex flex-row  items-center">
-            <h1 class=" text-3xl font-bold leading-tight flex-grow">{{ title }} </h1>
-            <span class="text-sm " v-if="user">
-                {{ user.name }}
-                <button @click="logout" class="btn btn-sm btn-primary">
-                    Logout
-                </button>
-            </span>
-            <div v-else class="space-x-4">
-                <button
-                    class="btn btn-sm btn-primary"
-                    @click="showLoginForm"
+    <header class="bg-white border-b shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-                >
-                    Login
-                </button>
-                <button
-                    class="btn btn-sm btn-primary"
-                    @click="showRegisterForm"
-                >
-                    Register
-                </button>
+            <!-- Title -->
+            <h1 class="text-xl font-semibold text-slate-800">
+                {{ title }}
+            </h1>
+
+            <!-- Auth buttons -->
+            <div>
+                <template v-if="user">
+                    <span class="mr-4 text-slate-600">{{ user.name }}</span>
+                    <button
+                        @click="logout"
+                        class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
+                    >
+                        Logout
+                    </button>
+                </template>
+
+                <template v-else>
+                    <button
+                        @click="showLoginForm"
+                        class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 mr-2"
+                    >
+                        Login
+                    </button>
+
+                    <button
+                        @click="showRegisterForm"
+                        class="px-3 py-1 rounded bg-slate-700 text-white hover:bg-slate-900"
+                    >
+                        Register
+                    </button>
+                </template>
             </div>
-        </div>
 
-        <!-- Optional: anything extra can be slotted below the title -->
-        <slot/>
+        </div>
     </header>
 </template>
 
+<style scoped>
+
+</style>

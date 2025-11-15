@@ -8,6 +8,7 @@ use App\Http\Controllers\UnitsController;
 use App\Http\Controllers\ExercicesController;
 
 Route::get('/', \App\Http\Controllers\MainController::class)->name('main');
+Route::get('/main1',fn()=>Inertia::render('Main1'));
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

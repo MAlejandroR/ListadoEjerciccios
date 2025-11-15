@@ -1,24 +1,21 @@
 <script setup lang="ts">
-
 import UnitsList from "@/Components/MyApp/SideBar/UnitsList.vue";
-import {ref, watch, computed, defineEmits} from "vue";
-import {Unit} from "@/Components/MyApp/types/Unit";
-import {Exercise} from "@/Components/MyApp/types/Exercise";
+import { ref, watch, computed, defineEmits } from "vue";
+import { Unit } from "@/Components/MyApp/types/Unit";
+import { Exercise } from "@/Components/MyApp/types/Exercise";
+import { Menu, ChevronsLeft } from "lucide-vue-next";
 
-const props = defineProps<{units:Unit[],exercises:Exercise[], practiced:number[] }>();
+const props = defineProps<{ units: Unit[]; exercises: Exercise[]; practiced: number[] }>();
 
+const emit = defineEmits(["statement"]);
 
+// --- Sidebar state ---
+const isOpen = ref(true); // <-- OPEN BY DEFAULT (as you requested)
+const showContent = ref(true);
 
-const isOpen = ref(false);
-//Variable para controlar el tiempo de renderizado
-//Evito el efecto de que se vea el título antes de que se despliege el menú izquierdo
-const showContent = ref(false);
-
-
-
-//Un objeto de arrays con los ejercicios de cada tema agrupados
+// Group exercises by unit
 const groupedExercises = computed(() => {
-    const groups = {};
+    const groups: Record<number, Exercise[]> = {};
     for (const ex of props.exercises ?? []) {
         if (!groups[ex.unit_id]) groups[ex.unit_id] = [];
         groups[ex.unit_id].push(ex);
@@ -26,57 +23,85 @@ const groupedExercises = computed(() => {
     return groups;
 });
 
-//Recojo el evento que está propagando UnitList de UnitItem que genera ExerciseItem y lo porpago a Slidebar
-const emit = defineEmits(['statement']);
+const onStatement = (exercise: Exercise) => emit("statement", exercise);
 
-const onStatement = (exercise)=>emit("statement", exercise);
-
-
-// console.log("En SidebarExercides");
-// console.log("Ejerciciso por tema");
-// console.log (groupedExercises.value);
-
-
+// Toggle animation
 const toggle_open = () => {
     isOpen.value = !isOpen.value;
 };
 
-watch (isOpen, (open)=>{
-    if (open)
-        setTimeout(()=>(showContent.value=true),250)
-    else
-        showContent.value=false
-
-
+watch(isOpen, (open) => {
+    if (open) setTimeout(() => (showContent.value = true), 200);
+    else showContent.value = false;
 });
-
-
 </script>
 
 <template>
     <aside
-        class="bg-gray-200 transition-all duration-300 flex flex-col"
-        :class="isOpen ? 'w-84 p-4' : 'w-6 p-1'"
+        class="transition-all duration-300  bg-white flex flex-col"
+        :class="isOpen ? 'w-72' : 'w-10'"
     >
-        <!-- Botón pegado al borde derecho -->
-        <div class="flex justify-end">
-            <img
-                :src="isOpen ? '/images/icons/menu-desplegable-open.png' : '/images/icons/menu-desplegable-close.png'"
+        <!-- HEADER WITH TOGGLE -->
+<!--        <div      class="flex items-center justify-between px-4 py-3  bg-gray-50"        >-->
+            <div class="sidebar-header relative flex items-center justify-between px-4 py-3 bg-gray-50">
+
+            <div v-if="isOpen" class="font-semibold text-gray-700 flex items-center gap-2">
+                <Menu class="w-5 h-5" />
+                Temas
+            </div>
+
+            <button
                 @click="toggle_open"
-                width="24"
-                class="bg-white border shadow rounded text-xs px-1 "
+                class="p-2 rounded-lg hover:bg-gray-200 transition"
+            >
+                <ChevronsLeft
+                    v-if="isOpen"
+                    class="w-5 h-5 text-gray-600"
+                />
+                <ChevronsLeft
+                    v-else
+                    class="w-5 h-5 rotate-180 text-gray-600"
+                />
+            </button>
+        </div>
+
+        <!-- CONTENT -->
+        <div v-if="showContent" class="overflow-auto p-1 bg-gray-50">
+            <UnitsList
+                :practiced="practiced"
+                :groupsExercises="groupedExercises"
+                :units="units"
+                @statement="onStatement"
             />
         </div>
-        <!-- Contenido del menú, solo visible si isOpen -->
-        <div v-if="showContent" class="mt-4">
-            <h2 class="text-2xl font-bold mb-3 text-gray-800">📘 Listado de prácticas</h2>
-            <UnitsList :practiced="practiced" :groupsExercises="groupedExercises" :units="units" @statement="onStatement"/>
+
+        <!-- Collapsed mode shows icons only -->
+        <div
+            v-else
+            class="flex flex-col items-center justify-start pt-1 text-gray-500 gap-3"
+        >
+            <Menu class="w-5 h-5" />
         </div>
-
     </aside>
-
 </template>
-
 <style scoped>
+.sidebar-header::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+    width: 100%;
+    height: 10px;
 
+    background: linear-gradient(
+        to bottom,
+        #dbeafe 0%,
+        #bfdbfe 100%
+    ); /* azulito MUY suave */
+
+    border-bottom-left-radius: 40% 20px;
+    border-bottom-right-radius: 30% 20px;
+
+    box-shadow: 0 4px 6px -4px rgba(0,0,0,0.18);
+}
 </style>
