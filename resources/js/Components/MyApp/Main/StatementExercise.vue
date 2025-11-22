@@ -9,7 +9,6 @@ const props = defineProps<{exercise:Exercise|null}>();
 const wikiAvailable = ref<WikiAvailable>("no-selection");
 
 
-
 // 🧹 Limpiar URL por si viene con comillas o atributos extra
 function cleanWikiUrl(raw) {
     if (!raw) return null;

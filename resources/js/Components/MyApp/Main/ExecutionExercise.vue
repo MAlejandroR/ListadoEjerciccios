@@ -69,7 +69,6 @@ const loadSource=()=>{
                 {{ showSource ? "Ocultar código fuente" : "Ver código fuente" }}
             </button>
         </div>
-
         <!-- 🧩 Iframe de ejecución -->
         <iframe
             v-if="iframeSrc"
@@ -78,11 +77,9 @@ const loadSource=()=>{
             height="400"
             class="rounded border shadow mt-3"
         ></iframe>
-
         <div v-else class="text-gray-600 italic p-4">
             No hay datos de ejercicio para mostrar.
         </div>
-
         <!-- 💻 Bloque de código -->
         <div
             v-if="showSource"

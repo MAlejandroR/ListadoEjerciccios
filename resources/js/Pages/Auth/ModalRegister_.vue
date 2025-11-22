@@ -1,16 +1,18 @@
-<script setup>
+<script setup lang="ts">
 
-import Login from "@/Pages/Auth/Login.vue";
+import Register from "@/Pages/Auth/Register.vue";
 import { ref,toRef } from "vue";
+import type  {Course} from "@/Components/MyApp/types/Course";
+import {X} from "lucide-vue-next";
 
 
 
 
 
 //Leo los props que vienen de Main
-const props = defineProps({show_login: Boolean});
+const props = defineProps<{show:Boolean, courses:Course[]}>();
 
-const show_login = toRef(props, "show_login")
+const show = toRef(props, "show")
 
 //Creo un mensaje para enviar a Main
 const emit = defineEmits(["close"]);
@@ -22,25 +24,24 @@ const close=()=>emit("close");
     <Teleport to="body">
 
         <div
-            v-if="show_login"
+            v-if="show"
             class="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center z-50"
         >
             <!-- Smaller modal box -->
             <div class="bg-white/95 rounded-2xl shadow-2xl w-[380px] p-4 relative flex flex-col items-center">
                 <!-- Header with close button aligned -->
                 <div class="flex w-full justify-between items-center mb-3">
-                    <h2 class="text-lg font-semibold text-gray-800">Login</h2>
+                    <h2 class="text-lg font-semibold text-gray-800">Register</h2>
                     <button
                         @click="close"
-                        class="text-gray-500 hover:text-black text-xl leading-none"
-                        title="Close"
+                        class="p-1 text-blue-600 hover:text-blue-800"
                     >
-                        ✕
+                        <X class="w-5 h-5 fa-mouse-pointer" />
                     </button>
                 </div>
 
-                <!-- Login form -->
-                <Login @login-success="close"/>
+                <!-- Register form -->
+                <Register :courses="props.courses" @register_success="close"/>
             </div>
         </div>
     </Teleport>

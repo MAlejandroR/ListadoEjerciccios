@@ -9,7 +9,8 @@ const props = defineProps({unit: Object, exercises: Array, practiced:Array})
 
 
 const page = usePage();
-const is_admin = computed(()=> page.props.auth.user?.is_admin===true);
+const role = computed (()=>page.props.auth.role);
+
 const admin_unit=(id)=>{
     router.visit(`admin/units/${id}/edit`)
 };
@@ -57,7 +58,12 @@ watch(
             <h2 class="text-sm font-semibold text-gray-800 flex items-center gap-2 pb-1 mb-1">
                 <i class="fa-solid fa-layer-group text-blue-600"></i>
                 {{ unit.title }}
-
+                <i
+                    v-if="role=='admin'"
+                    @click.stop="admin_unit(unit.id)"
+                    class="fa-solid fa-user-tie text-blue-600 hover:text-blue-800 cursor-pointer"
+                    title="Editar unidad"
+                ></i>
                 <i :class="[
                 'ml-auto flex items-center justify-center w-5 h-5 rounded-full text-gray-600 bg-gray-100 hover:bg-gray-200 cursor-pointer transition-all duration-200 shadow-sm',
                 isOpen ? 'fa-solid fa-sort-up py-[2px]' : 'fa-solid fa-sort-down -translate-y-[1px]'
@@ -65,12 +71,7 @@ watch(
                    @click="toggle"
                 ></i>
 
-                <i
-                    v-if="is_admin"
-                    @click.stop="admin_unit(unit.id)"
-                    class="fa-solid fa-user-tie text-blue-600 hover:text-blue-800 cursor-pointer"
-                    title="Editar unidad"
-                ></i>
+
             </h2>
 
             <ol

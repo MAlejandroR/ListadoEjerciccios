@@ -7,21 +7,19 @@ import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
 import {computed} from "vue";
 
 
-const props = defineProps<{courses:Course[]}>();
+const props = defineProps<{ courses: Course[] }>();
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? {name: "Invitado", is_admin: false});
 
 const form = useForm({
-    nick:'',
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
-    course_id:'',
+    course_id: '',
 });
 
-const emit = defineEmits<{(e:"register_success"):void}>();
-
+const emit = defineEmits<{ (e: "register_success"): void }>();
 
 
 const submit = () => {
@@ -34,10 +32,10 @@ const submit = () => {
                 //Por si la respuesta es visit y no un json
                 usePage().props.auth.user = page.props.auth.user
         },
-        onError:()=>{
+        onError: () => {
             console.warn("Error al registrar el estudante ".form.error)
         },
-        onFinish: async(response)=>{
+        onFinish: async (response) => {
             // Si la respuesta es JSON (tu caso)
             if (response && response.status === 200 && response.data?.user) {
                 const inertiaPage = usePage();
@@ -52,11 +50,12 @@ const submit = () => {
 </script>
 
 <template>
-        <Head title="Register" />
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+
+    <form @submit.prevent="submit">
+            <div class="mt-4">
+
+                <InputLabel for="name" value="Name"/>
 
                 <TextInput
                     id="name"
@@ -68,25 +67,11 @@ const submit = () => {
                     autocomplete="name"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div><div>
-                <InputLabel for="nick" value="Nick" />
-
-                <TextInput
-                    id="nick"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.nick"
-                    required
-                    autofocus
-                    autocomplete="nick"
-                />
-
-                <InputError class="mt-2" :message="form.errors.nick" />
+                <InputError class="mt-2" :message="form.errors.name"/>
             </div>
-
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+
+                <InputLabel for="email" value="Email"/>
 
                 <TextInput
                     id="email"
@@ -97,11 +82,11 @@ const submit = () => {
                     autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.email"/>
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Password"/>
 
                 <TextInput
                     id="password"
@@ -112,10 +97,7 @@ const submit = () => {
                     autocomplete="new-password"
                 />
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
+                <InputError class="mt-2" :message="form.errors.password"/>
                 <InputLabel
                     for="password_confirmation"
                     value="Confirm Password"
@@ -142,8 +124,8 @@ const submit = () => {
                 />
 
                 <select class="select select-neutral" v-model="form.course_id">
-                  <option v-for="course in courses" :key="course.id" :value="course.id">{{course.name}}</option>
-               </select>
+                    <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
+                </select>
             </div>
             <div class="mt-4 flex items-center justify-end">
                 <Link
@@ -161,5 +143,5 @@ const submit = () => {
                     Register
                 </PrimaryButton>
             </div>
-        </form>
+    </form>
 </template>

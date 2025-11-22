@@ -29,39 +29,6 @@ Está pensada como herramienta docente para que los estudiantes puedan visualiza
 
 ---
 
-##  Estructura general del proyecto
-
-laravel/
-├── app/
-│ ├── Http/
-│ │ ├── Controllers/
-│ │ │ ├── MainController.php
-│ │ │ ├── Auth/
-│ │ │ │ └── AuthenticatedSessionController.php
-│ │ │ └── Admin/
-│ │ │ ├── UnitController.php
-│ │ │ └── ExerciseController.php
-│ ├── Models/
-│ │ ├── Unit.php
-│ │ └── Exercise.php
-│ └── ...
-├── resources/
-│ ├── js/
-│ │ ├── Pages/
-│ │ │ ├── Main.vue
-│ │ │ ├── Dashboard.vue
-│ │ │ └── Auth/Login.vue
-│ │ └── Components/
-│ │ ├── MenuLeft.vue
-│ │ └── Layouts/HeaderTitle.vue
-│ └── css/app.css
-├── database/
-│ ├── migrations/
-│ └── seeders/
-└── routes/
-├── web.php
-└── auth.php
-
 
 
 ##  Instalación y ejecución
@@ -89,16 +56,24 @@ php artisan key:generate
 
 4.- Configurar base de datos
 
-Edita el archivo .env con tus credenciales.
+*La base de datos está dockerizada, se aporta el fichero **![docker-compose.yaml](./docker-compose.yaml)**, cuyas credenciales se leerán del fichero **.env** que se establezca
+Edita el archivo **.env** con tus credenciales.
 
 Ejecuta las migraciones y seeders:
+Si tienes la bd dockersizada, primero levanta el docker
+En el proyecto está el scrip **local** para realizar estas acciones
+
+```bash
+npm run local
+```
+
 
 ```bash
 php artisan migrate --seed
 ```
 
 5.- Iniciar servidor
-
+Si ejecutaste el script **local** no hace falta realizar estas acciones, ya que son incluídas en el mismo
 ```bash
 php artisan serve
 npm run dev
@@ -110,7 +85,8 @@ npm run dev
 ** Uso de la aplicación
 
 Para estudiantes 👩‍🏫 
-Acceso público al listado de temas y ejercicios.
+* Acceso público al listado de temas y ejercicios.
+* Un estudiante se puede registrar y podrá ir marcando los ejercicios que ya ha realizado
 
 Visualización del enunciado (en texto o iframe).
 
@@ -121,7 +97,11 @@ Acceso autenticado mediante login.
 
 Panel para gestionar temas y ejercicios.
 
-Posibilidad de sincronizar o importar ejercicios desde ficheros .ini.
+Posibilidad de sincronizar o importar ejercicios desde ficheros .ini. 
+
+### Pendientes
+Actualmente se insertan a partir de directorios con ini ejercicios desde la ejecución de seeders.
+Se puede documentar y generar un botón para el admin con este objetivo
 
 
 

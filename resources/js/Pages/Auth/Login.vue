@@ -1,6 +1,5 @@
     <script setup>
     import Checkbox from '@/Components/Utilities/Checkbox.vue';
-    import GuestLayout from '@/Layouts/GuestLayout.vue';
     import InputError from '@/Components/Utilities/InputError.vue';
     import InputLabel from '@/Components/Utilities/InputLabel.vue';
     import PrimaryButton from '@/Components/Utilities/PrimaryButton.vue';
