@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RolesTableSeeder::class,
-            ExercisesSeeder::class,
             CourseSeeder::class,
+            ExercisesSeeder::class,
         ]);
         $user = User::factory()->create([
             'name' => 'Admin',

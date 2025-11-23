@@ -23,7 +23,7 @@ class Exercise extends Model
         'index_name',
         'show_in_list',
         'show_source',
-        'units_id',
+        'unit_id',
         'folder_name'
     ];
 

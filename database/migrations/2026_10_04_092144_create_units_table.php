@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('folder_name')->nullable();
             $table->text('description')->nullable();
             $table->boolean('show_in_list')->default(true);
+            $table->foreignId('course_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

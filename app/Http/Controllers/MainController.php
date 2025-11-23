@@ -3,32 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Services\UserCourseContentService;
 use Illuminate\Http\Request;
 use App\Models\Exercise;
 use App\Models\Unit;
+
+
 
 class MainController extends Controller
 {
     //
     public function __invoke(Request $request)
     {
-//        $exercices =Exercise::all();
-        $exercises =Exercise::with('unit')
-        ->orderBy('unit_id')
-        ->get();
-        $units = Unit::orderBy('number')->get();
-        $courses =Course::all();
 
-        $practiced = $request->user()
-            ? $request->user()
-                ->practicedExercises()
-                ->wherePivot('practiced', true)
-                ->pluck('exercise_id')
-                ->toArray()
-            : [];
+        $user = auth()->user()??null;
+
+        //Return one array with (units of user, exercise avary unit, exercises practiqued by this user, $dir of this course)
+        $content=\App\Http\Services\UserCourseContentService::getContent($user);
+        $content["courses"]= Course::all();
 
 
 
-        return inertia('Main', compact('exercises', 'units', "courses","practiced"));
+        return inertia('Main', $content);
     }
+
+
 }

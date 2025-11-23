@@ -16,6 +16,11 @@ class CourseSeeder extends Seeder
     {
         //
         $course = Course::create([
+            "name" =>"Curso Invitado" ,
+            "teacher" =>"Manuel Romero Miguel",
+            "directory"=>"guest"
+        ]);
+        $course = Course::create([
             "name" =>"Certificado de profesionalidad (DATW)" ,
             "teacher" =>"Manuel Romero Miguel",
             "directory"=>"datw"
@@ -31,7 +36,7 @@ class CourseSeeder extends Seeder
         $course=Course::create([
             "name" =>"Desarrollo de aplicaciones web presencial (DWES_Presencial)",
             "teacher" =>"Manuel Romero Miguel",
-            "directory"=>"dwes_presencial_diurno"
+            "directory"=>"dwes_presencial"
         ]);
         $user=User::create([
             "name" =>"dwes1" ,
@@ -46,7 +51,7 @@ class CourseSeeder extends Seeder
         $course=Course::create([
             "name" =>"Desarrollo de aplicaciones web distancia (DWES_Distancia)",
             "teacher" =>"Manuel Romero Miguel",
-            "directory"=>"dwes_presencial_distancia"
+            "directory"=>"dwes_distancia"
         ]);
         $user=User::create([
             "name" =>"Alumno 1 dwes distancia" ,

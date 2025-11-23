@@ -4,7 +4,7 @@ import { computed, ref } from "vue";
 import { usePage, router } from "@inertiajs/vue3";
 
 const props = defineProps<{ title: string }>();
-const emit = defineEmits(["open-login", "open-register"]);
+const emit = defineEmits(["open-login", "open-register","open-email"]);
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
@@ -28,12 +28,7 @@ const mobileOpen = ref(false);
 
             <!-- RIGHT DESKTOP -->
             <div class="hidden md:flex items-center gap-2">
-                <button
-                    @click="logout"
-                    class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
-                >
-                    Enviar Email
-                </button>
+
                 <template v-if="user">
                     <span class="text-slate-600">{{ user.name }}</span>
                     <button
@@ -56,7 +51,14 @@ const mobileOpen = ref(false);
                     >
                         Register
                     </button>
+
                 </template>
+                <button
+                    @click="emit('open-email')"
+                    class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
+                >
+                    Enviar Email
+                </button>
             </div>
 
             <!-- RIGHT MOBILE: HAMBURGER -->
@@ -92,14 +94,15 @@ const mobileOpen = ref(false);
                 >
                     Login
                 </button>
-
                 <button
                     @click="emit('open-register'); mobileOpen = false"
                     class="w-full px-3 py-2 rounded bg-slate-700 text-white hover:bg-slate-900"
                 >
                     Register
                 </button>
+
             </template>
+
         </div>
     </header>
 </template>

@@ -26,7 +26,7 @@ const submit = () => {
     form.post(route('register'), {
         onSuccess: () => {
             form.reset('password', 'password_confirmation');
-            emit("register_success");
+            emit("register-success");
             //Actualizar los datos del props ????
             if (page?.auth?.user)
                 //Por si la respuesta es visit y no un json

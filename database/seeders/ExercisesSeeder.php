@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
 use App\Models\Exercise;
 use App\Models\Unit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,25 +28,35 @@ class ExercisesSeeder extends Seeder
     public function run(): void
     {
         //Recorremos los directorios que son los temas o unidades (/exercises(
-        $dir_units = Storage::disk("public")->directories("exercises");
+        $dir_courses = Storage::disk("public")->directories("exercises");
 
-        //Pra cada unidad si hay ini y es correcto
-        //Añado un tema en la base de datos con los valores del ini
-        foreach ($dir_units as $unit) {
-            //Cada ejercicio si tiene ini y es correcto lo doy de alta en la base de datos
-            $unit_id = $this->add_unit_database($unit);
+//Para cada curso buscamos sus unidades
+        foreach ($dir_courses as $course) {
 
-            if (!$unit_id) continue;
-            $this->add_exercise_database_if_ini($unit, $unit_id);
+            $dir_units = Storage::disk("public")->directories("$course");
+
+            //Para cada unidad si hay ini y es correcto
+            //Añado un tema en la base de datos con los valores del ini
+            foreach ($dir_units as $unit) {
+                //Cada ejercicio si tiene ini y es correcto lo doy de alta en la base de datos
+                $unit_id = $this->add_unit_database($unit, $course);
+
+                if (!$unit_id) continue;
+                $this->add_exercise_database_if_ini($unit, $unit_id);
+            }
         }
     }
 
-    private function add_unit_database(string $unit):null|int
+    private function add_unit_database(string $unit, string $dir):null|int
     {
         $unit_dir =basename($unit);
         $path_base= Storage::disk("public")->path($unit);
         $init_file="$path_base/$unit_dir.ini";
         $data = @parse_ini_file($init_file, true);
+        $dir=basename($dir);
+        
+
+        $course_id = Course::where('directory', $dir)->value('id');
 
 
         if (!is_array($data)) return null;
@@ -55,6 +66,7 @@ class ExercisesSeeder extends Seeder
             "show_in_list" => $data["show_in_list"]==1?true:false,
             "folder_name" => $unit_dir,
             'number' => $data["number"],
+            'course_id' => $course_id,
         ]);
         return $unit->id;
         }

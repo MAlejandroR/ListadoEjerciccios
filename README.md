@@ -150,7 +150,13 @@ Fecha	Descripción
 2025-10-08	Creación del modal de login con fondo difuminado.
 2025-10-10	Integración de Tailwind v4 y revisión de plugins.
 2025-10-11	Pruebas de autenticación y redirección tras login.
-(pendiente)	Implementar CRUD de temas y ejercicios desde el panel.
+(pendiente) Enviar correo (que funcione) 22/11/2025
+### Actual
+Establecer el directorio de los ejercicios:
+No conectado guest
+Un directorio por curso
+
+
 
 
 

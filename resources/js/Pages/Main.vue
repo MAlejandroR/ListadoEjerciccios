@@ -4,6 +4,7 @@ import HeaderContent from "@/Pages/Layouts/HeaderContent.vue";
 import StatementExercise from "@/Components/MyApp/Main/StatementExercise.vue";
 import ExecutionExercise from "@/Components/MyApp/Main/ExecutionExercise.vue";
 import ModalLogin from "@/Pages/Auth/ModalLogin.vue";
+import ModalEmail from "@/Pages/Auth/ModalEmail.vue";
 import ModalRegister from "@/Pages/Auth/ModalRegister.vue";
 import { ref } from "vue";
 
@@ -11,6 +12,7 @@ import type { Unit } from "@/Components/MyApp/types/Unit";
 import type { Exercise } from "@/Components/MyApp/types/Exercise";
 import type { Course } from "@/Components/MyApp/types/Course";
 import FooterContent from "@/Pages/Layouts/FooterContent.vue";
+import {router} from "@inertiajs/vue3";
 
 const props = defineProps<{
     units: Unit[];
@@ -21,8 +23,15 @@ const props = defineProps<{
 
 const show_login = ref(false);
 const show_register = ref(false);
+const show_email = ref(false);
 
 
+const handleLoginSuccess=()=>{
+    show_login.value=false
+    router.reload({
+        only:["units","exercises","practiced",$dir]
+    });
+}
 const selectedExercise = ref<Exercise | null>(null);
 
 const showStatement = (exercise: Exercise) => {
@@ -39,6 +48,7 @@ const showStatement = (exercise: Exercise) => {
                     title="Listado de Ejercicios de PHP"
                     @open-register="show_register = true"
                     @open-login="show_login = true"
+                    @open-email="show_email = true"
                 />
 
         </header>
@@ -60,7 +70,6 @@ const showStatement = (exercise: Exercise) => {
                     <section class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                         <h2 class="text-lg font-semibold text-gray-800 mb-4">Enunciado</h2>
                         <StatementExercise :exercise="selectedExercise" />
-
                     </section>
 
                     <!-- EJECUCIÓN --->
@@ -81,8 +90,9 @@ const showStatement = (exercise: Exercise) => {
         <FooterContent />
 
         <!-- Modales -->
-        <ModalLogin title="Login" :show="show_login" @close="show_login = false" />
-        <ModalRegister title="Resgistrarse" :show="show_register"
+        <ModalEmail title="Enviar Correo" :show="show_email" @close="show_email = false" />
+        <ModalLogin title="Login" :show="show_login" @login-sucess="handleLoginSuccess" />
+        <ModalRegister title="Resgistrarse" :show="show_register" :courses="courses"
                        @close="show_register =false"/>
     </div>
 </template>
