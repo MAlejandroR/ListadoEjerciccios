@@ -68,6 +68,7 @@ watch(isOpen, (open) => {
         <!-- CONTENT -->
         <div v-if="showContent" class="overflow-auto p-1 bg-gray-50">
             <UnitsList
+
                 :practiced="practiced"
                 :groupsExercises="groupedExercises"
                 :units="units"

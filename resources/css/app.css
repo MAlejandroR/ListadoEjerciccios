@@ -2,7 +2,209 @@
 @plugin "@tailwindcss/forms";
 @plugin "daisyui";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
-
+@import 'shepherd.js/dist/css/shepherd.css';
 [v-cloak] {
     display: none;
+}
+/* ESTILO FANCY tipo Stripe/Linear */
+.shepherd-fancy {
+    animation: fancyFade 0.25s ease-out;
+}
+
+/* Animación suave */
+@keyframes fancyFade {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Botón principal (gradiente estilo Linear/Stripe) */
+.fancy-btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+.fancy-btn-primary:hover {
+    opacity: 0.9;
+}
+
+/* Botón secundario */
+.fancy-btn-secondary {
+    background: #f3f4f6;
+    color: #374151 !important;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+.tour-border {
+    position: relative;
+    border: 6px solid #cfcfcf; /* exterior */
+    background-color: #9eeaf9;
+    border-radius: 16px;
+    padding: 5px;
+}
+
+.tour-border::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 12px;
+    border: 3px solid #a1a1a1; /* interior */
+    pointer-events: none;
+}
+
+/* Hide Shepherd's default SVG arrow */
+/* TOP arrow (panel appears below target) */
+.shepherd-element[data-popper-placement^="bottom"] .shepherd-arrow::before,
+.shepherd-element[data-floating-ui-placement^="bottom"] .shepherd-arrow::before {
+    content: "";
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 16px solid #ef4444; /* red arrow head */
+    background-color: transparent;
+}
+.shepherd-element[data-popper-placement^="bottom"] .shepherd-arrow::after,
+.shepherd-element[data-floating-ui-placement^="bottom"] .shepherd-arrow::after {
+    content: "";
+    position: absolute;
+    top: -8px;          /* below triangle */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 20px;
+    background-color:red; /* same red */
+
+    border-radius: 2px;
+}
+/* Arrow triangle (→) */
+.shepherd-element[data-popper-placement^="left"] .shepherd-arrow::before,
+.shepherd-element[data-floating-ui-placement^="left"] .shepherd-arrow::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 20px;               /* push arrow outside on the right */
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+
+    /* Triangle pointing RIGHT */
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 16px solid red; /* red arrow head */
+}
+
+/* Arrow stem */
+.shepherd-element[data-popper-placement^="left"] .shepherd-arrow::after,
+.shepherd-element[data-floating-ui-placement^="left"] .shepherd-arrow::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+                    /* align stem before triangle */
+    left: 0px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 10px;
+    background-color: red;
+    border-radius: 2px;
+}
+/* Arrow triangle (<=) */
+.shepherd-element[data-popper-placement^="right"] .shepherd-arrow::before,
+.shepherd-element[data-floating-ui-placement^="right"] .shepherd-arrow::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -30px;
+
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+
+    /* Triangle pointing RIGHT */
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 16px solid red; /* red arrow head */
+}
+/* Arrow stem */
+.shepherd-element[data-popper-placement^="right"] .shepherd-arrow::after,
+.shepherd-element[data-floating-ui-placement^="right"] .shepherd-arrow::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    /* align stem before triangle */
+    left: -5px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 10px;
+    background-color: red;
+    border-radius: 2px;
+}
+
+/* Fallback: pintar la flecha roja aunque no haya atributo data-popper-placement/data-floating-ui-placement */
+.shepherd-element .shepherd-arrow::before {
+    content: "";
+    position: absolute;
+    right: -12px; /* <-- moves rect left so triangle attaches to its right side */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 16px solid #ef4444; /* red arrow head */
+    background-color: transparent;
+}
+.shepherd-element .shepherd-arrow::after {
+    content: "";
+    position: absolute;
+    top: -8px;          /* below triangle */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 20px;
+    background-color:red; /* same red */
+    border-radius: 2px;
+}
+
+
+
+@layer components {
+    .title {
+        @apply text-4xl font-semibold mb-4 text-gray-900 relative pb-2;
+    }
+
+    .title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        width: 50%;
+        background-color: #4f46e5; /* Indigo-600 */
+        border-radius: 4px;
+    }
+}
+/* Animación SOLO para el tour */
+.tour-modal-animation {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 1s ease, transform 3s ease;
+}
+
+.tour-modal-animation.tour-modal-animation-active {
+    opacity: 1;
+    transform: scale(1);
 }

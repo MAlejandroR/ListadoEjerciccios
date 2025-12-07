@@ -6,13 +6,15 @@ import ExecutionExercise from "@/Components/MyApp/Main/ExecutionExercise.vue";
 import ModalLogin from "@/Pages/Auth/ModalLogin.vue";
 import ModalEmail from "@/Pages/Auth/ModalEmail.vue";
 import ModalRegister from "@/Pages/Auth/ModalRegister.vue";
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 
-import type { Unit } from "@/Components/MyApp/types/Unit";
-import type { Exercise } from "@/Components/MyApp/types/Exercise";
-import type { Course } from "@/Components/MyApp/types/Course";
+import type {Unit} from "@/Components/MyApp/types/Unit";
+import type {Exercise} from "@/Components/MyApp/types/Exercise";
+import type {Course} from "@/Components/MyApp/types/Course";
 import FooterContent from "@/Pages/Layouts/FooterContent.vue";
 import {router} from "@inertiajs/vue3";
+import {showRegister, showLogin, showEmail} from "@/Composable/UseModal";
+
 
 const props = defineProps<{
     units: Unit[];
@@ -21,15 +23,18 @@ const props = defineProps<{
     practiced: number[];
 }>();
 
-const show_login = ref(false);
-const show_register = ref(false);
-const show_email = ref(false);
 
 
-const handleLoginSuccess=()=>{
-    show_login.value=false
+//MRM ????? i believe these events are  never  invoke
+onMounted(()=>{
+    window.addEventListener('open-register-modal',()=>showRegister.value=true);
+    window.addEventListener('hidden-register-modal',()=>showRegister.value=false)
+});
+
+const handleLoginSuccess = () => {
+    showLogin.value = false
     router.reload({
-        only:["units","exercises","practiced",$dir]
+        only: ["units", "exercises", "practiced", "dir"]
     });
 }
 const selectedExercise = ref<Exercise | null>(null);
@@ -44,12 +49,12 @@ const showStatement = (exercise: Exercise) => {
 
         <!-- TOP BAR Filament-like -->
         <header class="bg-white border-b border-gray-200 shadow-sm">
-                <HeaderContent
-                    title="Listado de Ejercicios de PHP"
-                    @open-register="show_register = true"
-                    @open-login="show_login = true"
-                    @open-email="show_email = true"
-                />
+            <HeaderContent
+                title="Listado de Ejercicios de PHP"
+                @open-register="showRegister = true"
+                @open-login="showLogin = true"
+                @open-email="showEmail = true"
+            />
 
         </header>
 
@@ -69,14 +74,14 @@ const showStatement = (exercise: Exercise) => {
                     <!-- ENUNCIADO --->
                     <section class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                         <h2 class="text-lg font-semibold text-gray-800 mb-4">Enunciado</h2>
-                        <StatementExercise :exercise="selectedExercise" />
+                        <StatementExercise :exercise="selectedExercise"/>
                     </section>
 
                     <!-- EJECUCIÓN --->
 
                     <section class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
                         <h2 class="text-lg font-semibold text-gray-800 mb-4">Ejecución</h2>
-                            <ExecutionExercise :exercise="selectedExercise" />
+                        <ExecutionExercise :exercise="selectedExercise"/>
 
                     </section>
 
@@ -87,12 +92,12 @@ const showStatement = (exercise: Exercise) => {
         </div>
 
         <!-- FOOTER -->
-        <FooterContent />
+        <FooterContent/>
 
         <!-- Modales -->
-        <ModalEmail title="Enviar Correo" :show="show_email" @close="show_email = false" />
-        <ModalLogin title="Login" :show="show_login" @login-sucess="handleLoginSuccess" />
-        <ModalRegister title="Resgistrarse" :show="show_register" :courses="courses"
-                       @close="show_register =false"/>
+        <ModalEmail title="Enviar Correo" :show="showEmail" @close="showEmail = false"/>
+        <ModalLogin title="Login" :show="showLogin" @login-success="handleLoginSuccess" @close="showLogin = false"/>
+        <ModalRegister title="Resgistrarse" :show="showRegister" :courses="courses"
+                       @close="showRegister =false"/>
     </div>
 </template>

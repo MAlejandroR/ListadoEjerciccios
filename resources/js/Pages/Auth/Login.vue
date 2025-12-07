@@ -14,7 +14,7 @@
             type: String,
         },
     });
-    const emit = defineEmits('login-success');
+    const emit = defineEmits(['login-success']);
 
 
     const form = useForm({

@@ -2,6 +2,10 @@
 import { Menu, X } from "lucide-vue-next"; // icons mobile menu
 import { computed, ref } from "vue";
 import { usePage, router } from "@inertiajs/vue3";
+import {CreateTour} from "@/Composable/CreateTour";
+import {registerButton} from "@/Composable/HelperOpenWindow";
+
+const  {startTour}= CreateTour();
 
 const props = defineProps<{ title: string }>();
 const emit = defineEmits(["open-login", "open-register","open-email"]);
@@ -40,12 +44,14 @@ const mobileOpen = ref(false);
                 </template>
                 <template v-else>
                     <button
+                        id="login"
                         @click="emit('open-login')"
                         class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700 cursor-pointer"
                     >
                         Login
                     </button>
                     <button
+                        id="register"
                         @click="emit('open-register')"
                         class="px-3 py-1 rounded bg-slate-700 text-white hover:bg-slate-900  cursor-pointer"
                     >
@@ -54,10 +60,18 @@ const mobileOpen = ref(false);
 
                 </template>
                 <button
+                    id="email"
                     @click="emit('open-email')"
                     class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
                 >
                     Enviar Email
+                </button>
+                <button
+                    id="startTour"
+                    @click="startTour"
+                    class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
+                >
+                Inciar Tour
                 </button>
             </div>
 

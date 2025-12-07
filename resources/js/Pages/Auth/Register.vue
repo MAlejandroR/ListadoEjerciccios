@@ -4,12 +4,45 @@ import InputLabel from '@/Components/Utilities/InputLabel.vue';
 import PrimaryButton from '@/Components/Utilities/PrimaryButton.vue';
 import TextInput from '@/Components/Utilities/TextInput.vue';
 import {Head, Link, useForm, usePage} from '@inertiajs/vue3';
-import {computed} from "vue";
+import {computed, onMounted, ref} from "vue";
+import {nameRef,emailRef,passwordRef,confirmPasswordRef, selectCourseRef, registerButtonRef} from "@/Composable/UseModal.js";
 
 
 const props = defineProps<{ courses: Course[] }>();
 const page = usePage();
 const user = computed(() => page.props.auth?.user ?? {name: "Invitado", is_admin: false});
+const name_user = ref(null);
+const email = ref(null);
+const password = ref(null);
+const password_confirmation = ref(null);
+const course = ref(null);
+const register_button = ref(null);
+
+
+
+onMounted(()=>{
+    if (name_user.value && name_user.value.$el) {
+        nameRef.value = name_user.value.$el;  // el input real
+    }
+    if (email.value && email.value.$el) {
+        emailRef.value = email.value.$el;  // el input real
+    }
+    if (password.value && password.value.$el) {
+        passwordRef.value = password.value.$el;  // el input real
+    }
+    if (password_confirmation.value && password_confirmation.value.$el) {
+        confirmPasswordRef.value = password_confirmation.value.$el;  // el input real
+    }
+    if (register_button.value && register_button.value.$el) {
+        registerButtonRef.value = register_button.value.$el;  // el input real
+    }
+
+    if (course.value) {
+        selectCourseRef.value = course.value as HTMLSelectElement;
+    }
+
+});
+
 
 const form = useForm({
     name: '',
@@ -51,14 +84,15 @@ const submit = () => {
 
 <template>
 
-
-    <form @submit.prevent="submit">
+    <Head title="Register" />
+    <form id="menu-register" @submit.prevent="submit">
             <div class="mt-4">
 
                 <InputLabel for="name" value="Name"/>
 
                 <TextInput
                     id="name"
+                    ref="name_user"
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
@@ -75,6 +109,7 @@ const submit = () => {
 
                 <TextInput
                     id="email"
+                    ref="email"
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
@@ -91,6 +126,7 @@ const submit = () => {
                 <TextInput
                     id="password"
                     type="password"
+                    ref="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
@@ -105,7 +141,9 @@ const submit = () => {
 
                 <TextInput
                     id="password_confirmation"
+                    ref="password_confirmation"
                     type="password"
+
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
                     required
@@ -123,7 +161,7 @@ const submit = () => {
                     value="Selecciona curso"
                 />
 
-                <select class="select select-neutral" v-model="form.course_id">
+                <select id="course_id" ref="course" class="select select-neutral" v-model="form.course_id">
                     <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
                 </select>
             </div>
@@ -136,6 +174,7 @@ const submit = () => {
                 </Link>
 
                 <PrimaryButton
+                    ref="register_button"
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"

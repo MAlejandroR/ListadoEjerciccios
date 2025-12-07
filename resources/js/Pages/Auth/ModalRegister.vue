@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { defineEmits } from "vue";
 import AppModal from "@/Pages/Layouts/AppModal.vue";
-import Login from "@/Pages/Auth/Login.vue";
 import Register from "@/Pages/Auth/Register.vue";
 
 const props = defineProps<{show:Boolean, title:String, courses:Array}>();
