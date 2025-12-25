@@ -21,7 +21,11 @@ export function MainRegister(tour:any) {
         },
         arrow: true,
         buttons: [
-            {text: 'Atrás', action: tour.back, classes: 'fancy-btn-secondary'},
+            {text: 'Atrás', action:
+
+                tour.back,
+
+                classes: 'fancy-btn-secondary'},
             {text: 'Siguiente', action: tour.next, classes: 'fancy-btn-primary'}
         ]
     });

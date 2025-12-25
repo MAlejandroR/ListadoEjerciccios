@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import UnitsList from "@/Components/MyApp/SideBar/UnitsList.vue";
-import { ref, watch, computed, defineEmits } from "vue";
+import {ref, watch, computed, defineEmits, onMounted, defineExpose} from "vue";
 import { Unit } from "@/Components/MyApp/types/Unit";
 import { Exercise } from "@/Components/MyApp/types/Exercise";
 import { Menu, ChevronsLeft } from "lucide-vue-next";
+import {sidebarExercisesRef} from "@/Composable/UseModal.js";
 
 const props = defineProps<{ units: Unit[]; exercises: Exercise[]; practiced: number[] }>();
 
@@ -12,6 +13,24 @@ const emit = defineEmits(["statement"]);
 // --- Sidebar state ---
 const isOpen = ref(true); // <-- OPEN BY DEFAULT (as you requested)
 const showContent = ref(true);
+const listRef = ref(null);
+
+//To shepherd
+const openFirstUnit=()=>{
+    console.log("en SideBar openFirstUnit :)")
+    listRef.value?.openFirstUnit();
+};
+const closeFirstUnit=()=>{
+    console.log("en SideBar closeFirstUnit :)")
+    listRef.value?.closeFirstUnit();
+};
+
+
+
+defineExpose({
+    openFirstUnit,
+    closeFirstUnit,
+});
 
 // Group exercises by unit
 const groupedExercises = computed(() => {
@@ -23,12 +42,18 @@ const groupedExercises = computed(() => {
     return groups;
 });
 
+
 const onStatement = (exercise: Exercise) => emit("statement", exercise);
 
 // Toggle animation
 const toggle_open = () => {
     isOpen.value = !isOpen.value;
 };
+// onMounted(()=>{
+//     //Si existe el elemento lo asignamos a la ref de useModal
+//     if (listRef.value && listRef.value.$el)
+//         sidebarExercisesRef.value = listRef.value.$el;
+// })
 
 watch(isOpen, (open) => {
     if (open) setTimeout(() => (showContent.value = true), 200);
@@ -40,6 +65,7 @@ watch(isOpen, (open) => {
     <aside
         class="transition-all duration-300  bg-white flex flex-col"
         :class="isOpen ? 'w-72' : 'w-10'"
+        id="sidebar-exercises"
     >
         <!-- HEADER WITH TOGGLE -->
 <!--        <div      class="flex items-center justify-between px-4 py-3  bg-gray-50"        >-->
@@ -66,13 +92,13 @@ watch(isOpen, (open) => {
         </div>
 
         <!-- CONTENT -->
-        <div v-if="showContent" class="overflow-auto p-1 bg-gray-50">
+        <div id="units-list" v-if="showContent" class="overflow-auto p-1 bg-gray-50">
             <UnitsList
-
                 :practiced="practiced"
                 :groupsExercises="groupedExercises"
                 :units="units"
                 @statement="onStatement"
+                ref="listRef"
             />
         </div>
 

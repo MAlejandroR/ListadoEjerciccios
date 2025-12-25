@@ -33,6 +33,19 @@ export async function OpenRegisterMenu() {
         modal.classList.remove("tour-modal-animation-active");
     }, 1000);
 }
+export async function CloseRegisterMenu() {
+
+    // 1. Abrimos el modal usando Vue, no haciendo clic
+    showRegister.value = false;
+
+    console.log("Mostrando OpenRegister");
+
+
+    // 2. Esperar a que DOM del modal exista
+    await nextTick();
+
+
+}
 
 function waitForModalVisible(timeout = 3000): Promise<void> {
     return new Promise(resolve => {
@@ -51,7 +64,8 @@ function waitForModalVisible(timeout = 3000): Promise<void> {
                 }
             }
             if (performance.now() - start > timeout) {
-                // Fallback: resolvemos aunque no esté totalmente visible para evitar bloqueo infinito
+                // Fallback: resolvemos aunque no esté totalmente
+                // visible para evitar bloqueo infinito
                 resolve();
                 return;
             }

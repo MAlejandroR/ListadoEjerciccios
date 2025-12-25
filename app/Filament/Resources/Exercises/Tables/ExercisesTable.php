@@ -17,7 +17,8 @@ class ExercisesTable
             ->columns([
                 TextColumn::make('list_title')
                     ->label("Titulo en la lista")
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('exercise_title')
                     ->label("Título del ejercicio")
                     ->searchable(),

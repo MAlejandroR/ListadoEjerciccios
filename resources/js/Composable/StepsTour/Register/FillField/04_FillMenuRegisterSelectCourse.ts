@@ -1,7 +1,10 @@
-import {selectCourseRef} from "@/Composable/UseModal.js";
+import {confirmPasswordRef, selectCourseRef} from "@/Composable/UseModal.js";
 import {offset} from "@floating-ui/dom";
+import {nextTick} from "vue";
+import {useCancelableTyping} from "@/Composable/UseCancelableTyping.js";
 
 export function FillMenuRegisterSelectCourse(tour: any) {
+    const typing = useCancelableTyping();
     tour.addStep({
         id: 'fill-course-register',
         text: `
@@ -15,23 +18,24 @@ export function FillMenuRegisterSelectCourse(tour: any) {
         // No adjuntamos aún: lo haremos en beforeShowPromise para evitar parpadeos
         arrow: true,
         buttons: [
-            {text: 'Atrás', action: tour.back, classes: 'fancy-btn-secondary'},
+            {text: 'Atrás',
+                action:()=>{
+                    typing.cancel();
+                    const input = selectCourseRef.value as HTMLInputElement | null
+                    input.value="";
+                    input.dispatchEvent(new Event("input", {bubbles:true}))
+                    input.blur();
+                    tour.back();
+                },
+                classes: 'fancy-btn-secondary'},
             {text: 'Siguiente', action: tour.next, classes: 'fancy-btn-primary'}
         ],
 
         //Asegura de tener el elemento del dom montado
         beforeShowPromise: async () => {
             //Esperar a que el campo course esté montado el ref
-            await new Promise<boolean>(resolve => {
-                //check, función que espera hasta que el ref de selectCourse esté activo
-                const check = () => {
-                    if (selectCourseRef.value instanceof HTMLSelectElement)
-                        resolve(true)
-                    else
-                        requestAnimationFrame(check)
-                }
-                check();
-            });
+            await nextTick();
+
 
             //Actualizamos la opciones de ete paso
             try {

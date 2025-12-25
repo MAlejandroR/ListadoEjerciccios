@@ -63,7 +63,7 @@ const sendStatement = ()=>{
         />
 
         <!-- Título -->
-        <span class="leading-tight">
+        <span class="leading-tight" >
         {{ exercise.exercise_title }}
     </span>
 

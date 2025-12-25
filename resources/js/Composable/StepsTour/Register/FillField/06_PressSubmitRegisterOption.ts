@@ -1,5 +1,6 @@
 import {registerButtonRef} from "@/Composable/UseModal.js";
 import {offset} from "@floating-ui/dom";
+import {nextTick} from "vue";
 
 export function PressSubmitRegisterOption(tour: any) {
     tour.addStep({
@@ -17,29 +18,29 @@ export function PressSubmitRegisterOption(tour: any) {
         arrow: true,
         buttons: [
             {text: 'Atrás', action: tour.back, classes: 'fancy-btn-secondary'},
-            {text: 'Siguiente', action: tour.next, classes: 'fancy-btn-primary'}
+            {
+                text: 'Siguiente',
+                action: async ()=> {
+                    // Esperar un momento para asegurar que el usuario se ha registrado
+                    const btn = registerButtonRef.value as HTMLButtonElement | null;
+                    if (btn)
+                        btn.click();
+                    tour.next();
+                },
+                classes: 'fancy-btn-primary'}
         ],
 
         //Asegura de tener el elemento del dom montado
         beforeShowPromise: async () => {
             //Esperar a que el campo course esté montado el ref
-            await new Promise<boolean>(resolve => {
-                //check, función que espera hasta que el ref de selectCourse esté activo
-                const check = () => {
-                    if (registerButtonRef.value)
-                        resolve(true)
-                    else
-                        requestAnimationFrame(check)
-                }
-                check();
-            });
+          await nextTick();
 
             //Actualizamos la opciones de ete paso
             try {
                 tour.getCurrentStep().updateStepOptions({
                     attachTo: {
-                        element: registerButtonRef.value,
-                        on: 'right'
+                        element:registerButtonRef.value,
+                        on: 'top'
                     },
                     floatingUIOptions: {
                         middleware: [offset({mainAxis: 12})]
@@ -52,13 +53,6 @@ export function PressSubmitRegisterOption(tour: any) {
 
             }
         },
-        when: {
-            show: async () => {
-                const btn = registerButtonRef.value as HTMLButtonElement | null;
-                if (!btn) return;
-                await new Promise(r => setTimeout((r, 600)));
-                btn.click();
-            }
-        }
+
     });
 }

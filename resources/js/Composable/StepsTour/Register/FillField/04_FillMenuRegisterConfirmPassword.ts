@@ -1,9 +1,12 @@
 
 import {offset} from "@floating-ui/dom";
 
-import {confirmPasswordRef} from "@/Composable/UseModal.js";
+import {confirmPasswordRef, passwordRef} from "@/Composable/UseModal.js";
+import {nextTick} from "vue";
+import {useCancelableTyping} from "@/Composable/UseCancelableTyping.js";
 
 export function FillMenuRegisterConfirmPassword(tour:any) {
+    const typing = useCancelableTyping();
     tour.addStep({
         id: 'fill-confirm-password-register',
         text: `
@@ -17,22 +20,23 @@ export function FillMenuRegisterConfirmPassword(tour:any) {
         // No adjuntamos aún: lo haremos en beforeShowPromise para evitar parpadeos
         arrow: true,
         buttons: [
-            {text: 'Atrás', action: tour.back, classes: 'fancy-btn-secondary'},
+            {text: 'Atrás',
+                action:()=>{
+                    typing.cancel();
+                    const input = confirmPasswordRef.value as HTMLInputElement | null
+                    input.value="";
+                    input.dispatchEvent(new Event("input", {bubbles:true}))
+                    input.blur();
+                    tour.back();
+                },
+                classes: 'fancy-btn-secondary'},
             {text: 'Siguiente', action: tour.next, classes: 'fancy-btn-primary'}
         ],
         beforeShowPromise: async () => {
 
             // Esperar a que el campo #name_user esté montado el ref
-            await new Promise<boolean>(resolve => {
-                const check = () => {
-                    if (confirmPasswordRef.value)
-                        resolve(true);
-                    else
-                        requestAnimationFrame(check)
+            await nextTick();
 
-                };
-                check();
-            });
 
             // Actualizar opciones del step para adjuntar al select del curso
             try {
@@ -52,19 +56,8 @@ export function FillMenuRegisterConfirmPassword(tour:any) {
 
         when: {
             show: async () => {
-                const typeInto = async (input: HTMLInputElement | null, text: string, delay = 40) => {
-                    if (!input) return;
-                    input.focus();
-                    input.value = "";
-                    for (let i = 0; i <= text.length; i++) {
-                        input.value = text.slice(0, i);
-                        input.dispatchEvent(new Event("input", {bubbles: true}));
-                        await new Promise(r => setTimeout(r, delay));
-                    }
-                    input.blur();
-                };
-
-                await typeInto(confirmPasswordRef.value as HTMLInputElement, "12345678", 60);
+                typing.reset();
+                await typing.typeInto(confirmPasswordRef.value as HTMLInputElement, "12345678", 60);
             }
 
         }

@@ -3,6 +3,25 @@
 @plugin "daisyui";
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 @import 'shepherd.js/dist/css/shepherd.css';
+
+/* 1) Neutraliza el “rombo” base de Shepherd
+He añadido esto para evitar que cuando use el right, botton, left, ...
+ no salga el fondo blanco que en realidad no es un fondo sino la imegen de ese elemento ????
+
+*/
+.shepherd-element .shepherd-arrow {
+    background: transparent !important;
+    width: 0 !important;
+    height: 0 !important;
+    transform: none !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: visible !important; /* para que tus pseudo-elementos se vean fuera */
+}
+.shepherd-element .shepherd-arrow::before,
+.shepherd-element .shepherd-arrow::after {
+    z-index: 2;
+}
 [v-cloak] {
     display: none;
 }
@@ -60,8 +79,68 @@
     border: 3px solid #a1a1a1; /* interior */
     pointer-events: none;
 }
+/* Fallback: pintar la flecha roja aunque no haya atributo data-popper-placement/data-floating-ui-placement */
+.shepherd-element:not([data-popper-placement]):not([data-floating-ui-placement])
+.shepherd-arrow:not([data-popper-placement]):not([data-floating-ui-placement])::before {
+    content: "";
+    position: absolute;
+    right: -12px; /* <-- moves rect left so triangle attaches to its right side */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid red; /* red arrow head */
+    background-color: transparent;
+}
+.shepherd-element:not([data-popper-placement]):not([data-floating-ui-placement])
+.shepherd-arrow:not([data-popper-placement]):not([data-floating-ui-placement])::after {
+    content: "";
+    position: absolute;
+    top: -8px;          /* below triangle */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 20px;
+    background-color:transparent; /* same red */
+    border-radius: 2px;
+}
+
 
 /* Hide Shepherd's default SVG arrow */
+/* Hide Shepherd's default SVG arrow */
+/* TOP arrow (panel appears below target) */
+/* BOTTOM arrow (panel appears ABOVE the target, arrow points DOWN) *//* BOTTOM arrow (panel above target, arrow points DOWN) */
+.shepherd-element[data-popper-placement^="top"] .shepherd-arrow::before,
+.shepherd-element[data-floating-ui-placement^="top"] .shepherd-arrow::before {
+    content: "";
+    position: absolute;
+    bottom: -35px;
+    top:-5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 16px solid red; /* ✅ ONLY visible triangle */
+    background: transparent
+}
+
+.shepherd-element[data-popper-placement^="top"] .shepherd-arrow::after,
+.shepherd-element[data-floating-ui-placement^="top"] .shepherd-arrow::after {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 20px;
+    background-color: red; /*The body*/
+    border-radius: 2px;
+}
+
 /* TOP arrow (panel appears below target) */
 .shepherd-element[data-popper-placement^="bottom"] .shepherd-arrow::before,
 .shepherd-element[data-floating-ui-placement^="bottom"] .shepherd-arrow::before {
@@ -98,13 +177,15 @@
     top: 50%;
     left: 20px;               /* push arrow outside on the right */
     transform: translateY(-50%);
-    width: 0;
+    width: 0px;
     height: 0;
 
     /* Triangle pointing RIGHT */
     border-top: 12px solid transparent;
+    border-right: 0px solid transparent;
     border-bottom: 12px solid transparent;
-    border-left: 16px solid red; /* red arrow head */
+    border-left: 12px solid red; /* red arrow head */
+    background: transparent
 }
 
 /* Arrow stem */
@@ -113,7 +194,7 @@
     content: "";
     position: absolute;
     top: 50%;
-                    /* align stem before triangle */
+    /* align stem before triangle */
     left: 0px;
     transform: translateY(-50%);
     width: 20px;
@@ -127,7 +208,7 @@
     content: "";
     position: absolute;
     top: 50%;
-    left: -30px;
+    left: -20px;
 
     transform: translateY(-50%);
     width: 0;
@@ -135,8 +216,9 @@
 
     /* Triangle pointing RIGHT */
     border-top: 12px solid transparent;
+
     border-bottom: 12px solid transparent;
-    border-right: 16px solid red; /* red arrow head */
+    border-right: 12px solid red; /* red arrow head */
 }
 /* Arrow stem */
 .shepherd-element[data-popper-placement^="right"] .shepherd-arrow::after,
@@ -145,37 +227,11 @@
     position: absolute;
     top: 50%;
     /* align stem before triangle */
-    left: -5px;
+    left: -12px;
     transform: translateY(-50%);
     width: 20px;
     height: 10px;
     background-color: red;
-    border-radius: 2px;
-}
-
-/* Fallback: pintar la flecha roja aunque no haya atributo data-popper-placement/data-floating-ui-placement */
-.shepherd-element .shepherd-arrow::before {
-    content: "";
-    position: absolute;
-    right: -12px; /* <-- moves rect left so triangle attaches to its right side */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 16px solid #ef4444; /* red arrow head */
-    background-color: transparent;
-}
-.shepherd-element .shepherd-arrow::after {
-    content: "";
-    position: absolute;
-    top: -8px;          /* below triangle */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 10px;
-    height: 20px;
-    background-color:red; /* same red */
     border-radius: 2px;
 }
 

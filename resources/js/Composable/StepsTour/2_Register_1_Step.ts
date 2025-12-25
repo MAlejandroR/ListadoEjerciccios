@@ -1,7 +1,7 @@
-import { MainRegister } from "@/Composable/StepsTour/Register/01_MainRegister.js";
-import {MenuRegister} from "@/Composable/StepsTour/Register/02_MenuRegister.js";
-import {OpenMenuRegister} from "@/Composable/StepsTour/Register/03_OpenMenuRegister.js";
-import {FillMenuRegister} from "@/Composable/StepsTour/Register/04_FillMenuRegister.js";
+import { MainRegister } from "@/Composable/StepsTour/Register/01_MainRegister";
+import {OpenMenuRegister} from "@/Composable/StepsTour/Register/03_OpenMenuRegister";
+import {FillMenuRegister} from "@/Composable/StepsTour/Register/04_FillMenuRegister";
+// import {UserRegisted} from "@/Composable/StepsTour/Register/05_UserRegisted";
 
 
 export function Register (tour: any){
@@ -9,5 +9,5 @@ export function Register (tour: any){
     MainRegister(tour);
     OpenMenuRegister(tour);
     FillMenuRegister(tour);
-   // UserRegisted(tour);
+    // UserRegisted(tour);
 }

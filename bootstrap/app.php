@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
+        // ✅ ✅ ✅ CSRF EXCEPTION FOR TOUR RESET (LARAVEL 11 WAY)
+        $middleware->validateCsrfTokens(except: [
+            'tour/reset',
+        ]);
 
         //
     })

@@ -13,7 +13,8 @@ import type {Exercise} from "@/Components/MyApp/types/Exercise";
 import type {Course} from "@/Components/MyApp/types/Course";
 import FooterContent from "@/Pages/Layouts/FooterContent.vue";
 import {router} from "@inertiajs/vue3";
-import {showRegister, showLogin, showEmail} from "@/Composable/UseModal";
+import {showRegister, showLogin, showEmail, sidebarExercisesRef, nameRef} from "@/Composable/UseModal";
+
 
 
 const props = defineProps<{
@@ -23,12 +24,17 @@ const props = defineProps<{
     practiced: number[];
 }>();
 
+const sidebarRef = ref(null);
 
 
 //MRM ????? i believe these events are  never  invoke
 onMounted(()=>{
     window.addEventListener('open-register-modal',()=>showRegister.value=true);
     window.addEventListener('hidden-register-modal',()=>showRegister.value=false)
+    if (sidebarRef.value && sidebarRef.value.$el) {
+            sidebarExercisesRef.value = sidebarRef.value.$el;  // el input real
+        }
+    sidebarExercisesRef.value=sidebarRef.value
 });
 
 const handleLoginSuccess = () => {
@@ -62,6 +68,7 @@ const showStatement = (exercise: Exercise) => {
 
             <!-- Sidebar -->
             <SidebarExercises
+                ref="sidebarRef"
                 :units="units"
                 :exercises="exercises"
                 :practiced="practiced"

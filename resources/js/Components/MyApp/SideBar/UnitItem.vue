@@ -27,6 +27,21 @@ const admin_exercise=(id)=>{
 
 
 const isOpen = ref(false);
+
+
+//This sectio it is to management to shepherd and controle extenal to open and colose list of exercises
+const open  = ()=>{
+    console.log ("En UnitItem en Open");
+    isOpen.value = true;
+}
+const close  = ()=>{
+    isOpen.value = false;
+}
+//Para poder hacer cambiar el valor de isOpen desde fuera de este componente
+defineExpose({
+    open,
+    close
+})
 const toggle = () => {
     isOpen.value = !isOpen.value;
 }
@@ -49,7 +64,7 @@ watch(
 </script>
 
 <template>
-    <div class="space-y-1">
+    <div class="space-y-1" :id="`unit-${unit.id}`">
         <div
             class="bg-white shadow-sm rounded-xl p-1.5 border border-gray-100
                transition-transform transition-shadow duration-150 ease-out
@@ -84,6 +99,7 @@ watch(
                     class="px-2 py-1 rounded-md bg-gray-50 shadow-sm
                        hover:bg-gray-100 hover:shadow-md transition-all duration-150 inline-flex w-full"
                 >
+                    {{ console.log(`unit id = ${unit.id}`) }}
                     <ExerciseItem
                         :practiced="practiced"
                         :exercise="exercise"

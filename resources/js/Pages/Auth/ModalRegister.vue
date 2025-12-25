@@ -9,7 +9,7 @@ const props = defineProps<{show:Boolean, title:String, courses:Array}>();
 
 <template>
     <AppModal  col=2 :title="props.title" v-if="props.show" @close="$emit('close')">
-        <Register  :courses='courses' @login-success="$emit('close')" />
+        <Register  :courses='courses' @register-success="$emit('close')" />
     </AppModal>
 </template>
 <style>

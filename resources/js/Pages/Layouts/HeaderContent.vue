@@ -1,19 +1,24 @@
 <script setup lang="ts">
-import { Menu, X } from "lucide-vue-next"; // icons mobile menu
-import { computed, ref } from "vue";
-import { usePage, router } from "@inertiajs/vue3";
+import {Menu, X} from "lucide-vue-next"; // icons mobile menu
+import {computed, onMounted, ref} from "vue";
+import {usePage, router} from "@inertiajs/vue3";
 import {CreateTour} from "@/Composable/CreateTour";
 import {registerButton} from "@/Composable/HelperOpenWindow";
 
-const  {startTour}= CreateTour();
+const {startTour} = CreateTour();
 
 const props = defineProps<{ title: string }>();
-const emit = defineEmits(["open-login", "open-register","open-email"]);
+const emit = defineEmits(["open-login", "open-register", "open-email"]);
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
 
-const logout = () => router.post(route("logout"));
+
+const logout = () => router.visit(route("logout"), {
+    method: 'post'
+});
+
+
 
 const mobileOpen = ref(false);
 </script>
@@ -23,7 +28,7 @@ const mobileOpen = ref(false);
         <div class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center">
             <!-- LEFT: Logo + Title -->
             <div class="flex items-center gap-3">
-                <img src="/images/logo.png" class="h-10 w-auto" alt="Logo" />
+                <img src="/images/logo.png" class="h-10 w-auto" alt="Logo"/>
 
                 <h1 class="text-xl md:text-2xl font-bold italic text-slate-800 whitespace-nowrap">
                     {{ title }}
@@ -34,7 +39,7 @@ const mobileOpen = ref(false);
             <div class="hidden md:flex items-center gap-2">
 
                 <template v-if="user">
-                    <span class="text-slate-600">{{ user.name }}</span>
+                    <span id="labelUserRegistred" class="text-slate-600">{{ user.name }}</span>
                     <button
                         @click="logout"
                         class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
@@ -71,7 +76,7 @@ const mobileOpen = ref(false);
                     @click="startTour"
                     class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
                 >
-                Inciar Tour
+                    Inciar Tour
                 </button>
             </div>
 
@@ -80,7 +85,7 @@ const mobileOpen = ref(false);
                 class="md:hidden p-2 text-slate-700 hover:text-black"
                 @click="mobileOpen = !mobileOpen"
             >
-                <component :is="mobileOpen ? X : Menu" class="w-6 h-6" />
+                <component :is="mobileOpen ? X : Menu" class="w-6 h-6"/>
             </button>
         </div>
 

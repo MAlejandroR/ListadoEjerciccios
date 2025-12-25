@@ -1,15 +1,18 @@
 import '../css/app.css';
 import './bootstrap';
 
+
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 // Font Awesome setup
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
+import {tokenRef} from "@/Composable/UseModal.ts";
+import { CreateTour } from '@/Composable/CreateTour';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -19,12 +22,18 @@ createInertiaApp({
             import.meta.glob('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        return createApp({ render: () => h(App, props) })
+        const vueApp = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
             // 👇 Register FontAwesome globally
             .component('FontAwesomeIcon', FontAwesomeIcon)
             .mount(el);
+
+        // Si venimos de un reload solicitado por startTour y la marca está en sessionStorage,
+        // la borramos y lanzamos el tour ahora que la sesión/token están sincronizados.
+
+
+        return vueApp;
     },
     progress: {
         color: '#4B5563',

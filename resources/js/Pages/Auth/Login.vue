@@ -1,4 +1,4 @@
-    <script setup>
+<script setup>
     import Checkbox from '@/Components/Utilities/Checkbox.vue';
     import InputError from '@/Components/Utilities/InputError.vue';
     import InputLabel from '@/Components/Utilities/InputLabel.vue';
@@ -25,9 +25,12 @@
 
     const submit = () => {
         form.post(route('login'), {
+            preserveScroll:true,
             onSuccess:()=>{
                 emit('login-success')
                 form.reset('password')
+                // Forzamos recarga completa para sincronizar sesión/CSRF
+                window.location.reload();
             }
 
         });
