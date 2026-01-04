@@ -1,5 +1,5 @@
 <script setup>
-import { Github,FileCode, Mail,  Heart } from "lucide-vue-next";
+import { Github, FileCode, Mail,  Heart } from "lucide-vue-next";
 </script>
 
 <template>

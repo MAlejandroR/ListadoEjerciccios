@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import {defineEmits, defineProps, nextTick, ref} from "vue";
 import UnitItem from "@/Components/MyApp/SideBar/UnitItem.vue";
-import {Units} from "@/Composable/StepsTour/3_Units_step.js";
+import {Unit} from     "@/Components/MyApp/types/Unit";
+import {Exercise} from "@/Components/MyApp/types/Exercise.js";
 
 
-const props = defineProps({groupsExercises: Object, units: Units, practiced: Array})
+const props = defineProps<{groupsExercises:Record<number, Exercise[]>, units: Unit[], practiced: number[]}>()
 
 
 console.log("UntisList");

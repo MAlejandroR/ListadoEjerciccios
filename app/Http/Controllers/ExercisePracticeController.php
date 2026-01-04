@@ -32,6 +32,6 @@ class ExercisePracticeController extends Controller
              $user->practicedExercises()->detach($exercise->id);
         }
 
-        return response()->json(['ok' => true]);
+        return redirect()->back();
     }
 }

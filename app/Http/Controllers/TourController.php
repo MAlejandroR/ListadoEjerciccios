@@ -8,6 +8,18 @@ use Illuminate\Support\Facades\Auth;
 
 class TourController extends Controller
 {
+    public function startTour(Request $request){
+        session()->put('tour',true);
+        return redirect()->back();
+    }
+    public function closeTour(Request $request){
+        session()->flush("tour");
+        return redirect()->back();
+    }
+
+
+
+
     public function reset(Request $request)
     {
 

@@ -1,6 +1,6 @@
 import {offset} from "@floating-ui/dom";
 
-export function Email (tour: any){
+export function ClickEmail (tour: any){
 
     tour.addStep({
         id: 'step-email',

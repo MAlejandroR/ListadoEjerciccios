@@ -1,11 +1,13 @@
-<script setup>
+<script setup lang="ts">
 
 import {ref, defineProps, defineEmits, computed, watch} from "vue";
 import ExerciseItem from "@/Components/MyApp/SideBar/ExerciseItem.vue";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {router, usePage} from "@inertiajs/vue3";
+import {Unit} from "@/Components/MyApp/types/Unit";
+import {Exercise} from "@/Components/MyApp/types/Exercise";
 
-const props = defineProps({unit: Object, exercises: Array, practiced:Array})
+const props = defineProps<{unit: Unit, exercises: Exercise[], practiced:number[]}>();
 
 
 const page = usePage();

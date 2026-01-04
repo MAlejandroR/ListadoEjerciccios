@@ -1,7 +1,8 @@
 import { MainRegister } from "@/Composable/StepsTour/Register/01_MainRegister";
 import {OpenMenuRegister} from "@/Composable/StepsTour/Register/03_OpenMenuRegister";
 import {FillMenuRegister} from "@/Composable/StepsTour/Register/04_FillMenuRegister";
-// import {UserRegisted} from "@/Composable/StepsTour/Register/05_UserRegisted";
+import {PressSubmitRegisterOption} from "@/Composable/StepsTour/Register/FillField/06_PressSubmitRegisterOption";
+
 
 
 export function Register (tour: any){
@@ -9,5 +10,6 @@ export function Register (tour: any){
     MainRegister(tour);
     OpenMenuRegister(tour);
     FillMenuRegister(tour);
-    // UserRegisted(tour);
+    PressSubmitRegisterOption(tour)
+
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TourController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,5 +31,8 @@ Route::put('/exercices/{exercice}/hide_show',[ExercicesController::class, 'hide_
 
 Route::post("/exercises/{exercise}/practice",\App\Http\Controllers\ExercisePracticeController::class )->name("exercises.practice");
 Route::post("/tour/reset",[\App\Http\Controllers\TourController::class,'reset'])->name("tour-reset");
+
+Route::get("startTour",[TourController::class, "startTour"])->name('tour.start');
+Route::get("closeTour",[TourController::class, "closeTour"])->name('tour.close');
 
 require __DIR__.'/auth.php';

@@ -1,4 +1,3 @@
-import {Exercise} from "@/Components/MyApp/types/Exercise";
 
 export interface Unit {
     id: number;

@@ -20,5 +20,9 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+{{--        PAra logout de shepherd--}}
+        <form id="logout-form" method="POST" action="/logout" style="display:none;">
+            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        </form>
     </body>
 </html>

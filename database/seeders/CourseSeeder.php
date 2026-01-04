@@ -15,6 +15,7 @@ class CourseSeeder extends Seeder
     public function run(): void
     {
         //
+
         $course = Course::create([
             "name" =>"Curso Invitado" ,
             "teacher" =>"Manuel Romero Miguel",

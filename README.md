@@ -187,3 +187,19 @@ A los estudiantes del ciclo DAW/DWES por su implicación y retroalimentación.
 Y al ecosistema de Laravel, Vue e Inertia por facilitar un entorno moderno y didáctico.
 
 
+## Diario objetivos YA
+### Tour de usuario => 04/01/2026
+[4/01/2026] => 
+Rellenar formulario de registro 
+[11:00] => Funciona registro, pendiente:
+* listado de cursos
+* seleccionar ejercicios
+* logout
+* login
+* enviar correo
+* logout
+* administraccion
+* * Cursos
+* * Ejercicios
+* * Usuarios
+> FIN TOUR

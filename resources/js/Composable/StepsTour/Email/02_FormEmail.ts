@@ -1,32 +1,28 @@
 import {offset} from "@floating-ui/dom";
 
-export function Exercises (tour: any){
+export function FormEmail (tour: any){
 
-
-// EXERCISES
     tour.addStep({
-        id: 'step-exercise',
+        id: 'step-email',
         text: `
                 <h2 class="text-xl font-semibold mb-2 text-gray-900">
-                    Ejercicios
+                    Contactar
                 </h2>
                 <p class="text-gray-600 leading-relaxed">
-                    Cada unidad contiene ejercicios prácticos. Puedes marcar los que ya hayas revisado.
+                    Puedes enviar un correo al profesor en cualquier momento, incluso sin iniciar sesión.
                 </p>
             `,
         attachTo: {
-            element: '#exercise',
-            on: 'right'
+            element: '#email',
+            on: 'bottom'
         },
         floatingUIOptions: {
             middleware: [offset(20)] // 20px separation
         },
-
         buttons: [
             {text: 'Atrás', action: tour.back, classes: 'fancy-btn-secondary'},
-            {text: 'Finalizar', action: tour.cancel, classes: 'fancy-btn-primary'}
-        ],
+            {text: 'Siguiente', action: tour.next, classes: 'fancy-btn-primary'}
+        ]
+    });
 
-
-    })
 }

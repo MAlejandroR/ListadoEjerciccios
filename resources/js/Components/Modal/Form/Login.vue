@@ -30,7 +30,7 @@
                 emit('login-success')
                 form.reset('password')
                 // Forzamos recarga completa para sincronizar sesión/CSRF
-                window.location.reload();
+                // window.location.reload();
             }
 
         });

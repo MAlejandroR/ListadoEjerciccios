@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import SidebarExercises from "@/Components/MyApp/SidebarExercises.vue";
-import HeaderContent from "@/Pages/Layouts/HeaderContent.vue";
+import HeaderContent from "@/Components/Layouts/HeaderContent.vue";
+import FooterContent from "@/Components/Layouts/FooterContent.vue";
 import StatementExercise from "@/Components/MyApp/Main/StatementExercise.vue";
 import ExecutionExercise from "@/Components/MyApp/Main/ExecutionExercise.vue";
-import ModalLogin from "@/Pages/Auth/ModalLogin.vue";
-import ModalEmail from "@/Pages/Auth/ModalEmail.vue";
-import ModalRegister from "@/Pages/Auth/ModalRegister.vue";
-import {onMounted, ref} from "vue";
+import ModalLogin from "@/Components/Modal/ModalLogin.vue";
+import ModalEmail from "@/Components/Modal/ModalEmail.vue";
+import ModalRegister from "@/Components/Modal/ModalRegister.vue";
+import { provide, ref} from "vue";
 
 import type {Unit} from "@/Components/MyApp/types/Unit";
 import type {Exercise} from "@/Components/MyApp/types/Exercise";
 import type {Course} from "@/Components/MyApp/types/Course";
-import FooterContent from "@/Pages/Layouts/FooterContent.vue";
-import {router} from "@inertiajs/vue3";
+
 import {showRegister, showLogin, showEmail, sidebarExercisesRef, nameRef} from "@/Composable/UseModal";
+import CreateTour from "@/Composable/CreateTour";
 
 
 
@@ -24,24 +25,30 @@ const props = defineProps<{
     practiced: number[];
 }>();
 
+const isTourActive = ref<boolean>(false);
+
+const {startTour}= CreateTour (isTourActive)
+
+provide("isTourActive", isTourActive);
+
 const sidebarRef = ref(null);
 
 
-//MRM ????? i believe these events are  never  invoke
-onMounted(()=>{
-    window.addEventListener('open-register-modal',()=>showRegister.value=true);
-    window.addEventListener('hidden-register-modal',()=>showRegister.value=false)
-    if (sidebarRef.value && sidebarRef.value.$el) {
-            sidebarExercisesRef.value = sidebarRef.value.$el;  // el input real
-        }
-    sidebarExercisesRef.value=sidebarRef.value
-});
+// //MRM ????? i believe these events are  never  invoke
+// onMounted(()=>{
+//     window.addEventListener('open-register-modal',()=>showRegister.value=true);
+//     window.addEventListener('hidden-register-modal',()=>showRegister.value=false)
+//     if (sidebarRef.value && sidebarRef.value.$el) {
+//             sidebarExercisesRef.value = sidebarRef.value.$el;  // el input real
+//         }
+//     sidebarExercisesRef.value=sidebarRef.value
+// });
 
 const handleLoginSuccess = () => {
     showLogin.value = false
-    router.reload({
-        only: ["units", "exercises", "practiced", "dir"]
-    });
+    // router.reload({
+    //     only: ["units", "exercises", "practiced", "dir"]
+    // });
 }
 const selectedExercise = ref<Exercise | null>(null);
 
@@ -103,8 +110,7 @@ const showStatement = (exercise: Exercise) => {
 
         <!-- Modales -->
         <ModalEmail title="Enviar Correo" :show="showEmail" @close="showEmail = false"/>
-        <ModalLogin title="Login" :show="showLogin" @login-success="handleLoginSuccess" @close="showLogin = false"/>
-        <ModalRegister title="Resgistrarse" :show="showRegister" :courses="courses"
-                       @close="showRegister =false"/>
+        <ModalLogin title="Login" :show="showLogin" @success="handleLoginSuccess" @close="showLogin = false"/>
+        <ModalRegister title="Resgistrarse" :show="showRegister" :courses="courses" @close="showRegister =false"/>
     </div>
 </template>

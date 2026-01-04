@@ -2,10 +2,10 @@
 import {Menu, X} from "lucide-vue-next"; // icons mobile menu
 import {computed, onMounted, ref} from "vue";
 import {usePage, router} from "@inertiajs/vue3";
-import {CreateTour} from "@/Composable/CreateTour";
-import {registerButton} from "@/Composable/HelperOpenWindow";
+import {logoutButton, registerButtonRef} from "@/Composable/UseModal";
+import CreateTour from "@/Composable/CreateTour";
+import {useAuth} from "@/Composable/useAuth";
 
-const {startTour} = CreateTour();
 
 const props = defineProps<{ title: string }>();
 const emit = defineEmits(["open-login", "open-register", "open-email"]);
@@ -13,11 +13,23 @@ const emit = defineEmits(["open-login", "open-register", "open-email"]);
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
 
+const logout_button = ref(null);
+const isTourActive = ref(false)
+const {startTour} = CreateTour(isTourActive);
 
-const logout = () => router.visit(route("logout"), {
-    method: 'post'
-});
+onMounted(() => {
+    console.log(`En HeaderContent valor de logout_button ${logout_button.value}`);
+        if (logout_button.value && logout_button.value.$el) {
+            logoutButton.value = logout_button.value.$el;  // el input real
+            console.log(`En HeaderContent Valor de logoutButton ${logoutButton}`);
+        }else
+            console.log(`En HeaderContent Sin valor  de logoutButton ${logoutButton}`);
 
+    }
+
+);
+
+const {logout} = useAuth();
 
 
 const mobileOpen = ref(false);
@@ -41,8 +53,10 @@ const mobileOpen = ref(false);
                 <template v-if="user">
                     <span id="labelUserRegistred" class="text-slate-600">{{ user.name }}</span>
                     <button
+                        id="logout"
+                        ref="logout_button"
                         @click="logout"
-                        class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
+                        class="px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700 mouse-pointer"
                     >
                         Logout
                     </button>
@@ -64,17 +78,21 @@ const mobileOpen = ref(false);
                     </button>
 
                 </template>
+
                 <button
                     id="email"
                     @click="emit('open-email')"
-                    class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
+                    class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700 cursor-pointer"
                 >
                     Enviar Email
                 </button>
                 <button
                     id="startTour"
                     @click="startTour"
-                    class="px-3 py-1 rounded bg-green-700 text-white hover:bg-red-700"
+                    class="px-3 py-1 rounded
+                     bg-green-700 text-white
+                     hover:bg-red-700 cursor-pointer
+                     active:bg-red-900"
                 >
                     Inciar Tour
                 </button>
@@ -82,7 +100,7 @@ const mobileOpen = ref(false);
 
             <!-- RIGHT MOBILE: HAMBURGER -->
             <button
-                class="md:hidden p-2 text-slate-700 hover:text-black"
+                class="md:hidden p-2 text-slate-700 hover:text-black cursor-pointer"
                 @click="mobileOpen = !mobileOpen"
             >
                 <component :is="mobileOpen ? X : Menu" class="w-6 h-6"/>
@@ -99,7 +117,7 @@ const mobileOpen = ref(false);
 
                 <button
                     @click="logout"
-                    class="w-full mb-2 px-3 py-2 rounded bg-red-600 text-white hover:bg-red-700"
+                    class="w-full mb-2 px-3 py-2 rounded bg-red-600 text-white hover:bg-red-700 cursor-pointer"
                 >
                     Logout
                 </button>

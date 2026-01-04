@@ -4,8 +4,7 @@ import { FillMenuRegisterName } from "@/Composable/StepsTour/Register/FillField/
 import { FillMenuRegisterEmail } from "./FillField/02_FillMenuRegisterEmail.js";
 import { FillMenuRegisterPassword } from "./FillField/03_FillMenuRegisterPassword.js";
 import { FillMenuRegisterConfirmPassword } from "./FillField/04_FillMenuRegisterConfirmPassword.js";
-import { FillMenuRegisterSelectCourse } from "./FillField/04_FillMenuRegisterSelectCourse.js";
-import {PressSubmitRegisterOption} from "@/Composable/StepsTour/Register/FillField/06_PressSubmitRegisterOption.js";
+import {FillMenuRegisterSelectCourse} from "@/Composable/StepsTour/Register/FillField/04_FillMenuRegisterSelectCourse";
 
 
 export function FillMenuRegister(tour:any) {
@@ -13,7 +12,5 @@ export function FillMenuRegister(tour:any) {
     FillMenuRegisterEmail(tour);
     FillMenuRegisterPassword(tour);
     FillMenuRegisterConfirmPassword(tour);
-    FillMenuRegisterSelectCourse(tour);
-    PressSubmitRegisterOption(tour)
-
+    FillMenuRegisterSelectCourse(tour)
 }

@@ -7,6 +7,7 @@ import {modalRegisterRef, modalBoxRef} from "@/Composable/UseModal";
 
 
 
+// Titulo y número de columnas del formulario que contenga
 const props = defineProps<{ title: String, col: Number }>()
 
 const modalRoot = ref<HTMLElement|null>(null);

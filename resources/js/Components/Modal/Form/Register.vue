@@ -16,6 +16,7 @@ const email = ref(null);
 const password = ref(null);
 const password_confirmation = ref(null);
 const course = ref(null);
+const courseRef = ref(null)
 const register_button = ref(null);
 
 
@@ -52,30 +53,31 @@ const form = useForm({
     course_id: '',
 });
 
-const emit = defineEmits<{ (e: "register_success"): void }>();
+const emit = defineEmits(['success','close']);
 
 
 const submit = () => {
     form.post(route('register'), {
         onSuccess: () => {
             form.reset('password', 'password_confirmation');
-            emit("register-success");
-            //Actualizar los datos del props ????
-            if (page?.auth?.user)
-                //Por si la respuesta es visit y no un json
-                usePage().props.auth.user = page.props.auth.user
+            emit("success");
+            emit("close");
+            // //Actualizar los datos del props ????
+            // if (page?.auth?.user)
+            //     //Por si la respuesta es visit y no un json
+            //     usePage().props.auth.user = page.props.auth.user
         },
         onError: () => {
             console.warn("Error al registrar el estudante ".form.error)
         },
-        onFinish: async (response) => {
-            // Si la respuesta es JSON (tu caso)
-            if (response && response.status === 200 && response.data?.user) {
-                const inertiaPage = usePage();
-                inertiaPage.props.auth = inertiaPage.props.auth || {};
-                inertiaPage.props.auth.user = response.data.user;
-            }
-        }
+        // onFinish: async (response) => {
+        //     // Si la respuesta es JSON (tu caso)
+        //     // if (response && response.status === 200 && response.data?.user) {
+        //     //     const inertiaPage = usePage();
+        //     //     inertiaPage.props.auth = inertiaPage.props.auth || {};
+        //     //     inertiaPage.props.auth.user = response.data.user;
+        //     }
+        // }
 
     });
 
@@ -162,7 +164,12 @@ const submit = () => {
                 />
 
                 <select id="course_id" ref="course" class="select select-neutral" v-model="form.course_id">
-                    <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.name }}</option>
+                    <option value="" disabled selected>
+                        Selecciona un curso
+                    </option>
+                    <option v-for="(course, index) in courses" :key="course.id" :value="course.id">
+                        {{ course.name }}
+                    </option>
                 </select>
             </div>
             <div class="mt-4 flex items-center justify-end">

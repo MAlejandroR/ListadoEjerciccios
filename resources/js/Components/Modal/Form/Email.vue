@@ -13,8 +13,10 @@ defineProps({
     },
 });
 
-const email=usePage().props.auth?.user?.email ?? null;
-const emit = defineEmits(['email-sent']);
+const email=usePage().props.auth?.user?.email ?? "";
+const emit = defineEmits(['sent']);
+
+
 
 const form = useForm({
     from: email,
@@ -27,7 +29,7 @@ const form = useForm({
 const submit = () => {
     form.post(route('email.send'), {
         onSuccess: () => {
-            emit('email-sent');
+            emit('sent');
             form.reset();
         }
     });

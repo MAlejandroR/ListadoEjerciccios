@@ -9,7 +9,7 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 // Font Awesome setup
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {tokenRef} from "@/Composable/UseModal.ts";
-import { CreateTour } from '@/Composable/CreateTour';
+import CreateTour from '@/Composable/CreateTour';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
