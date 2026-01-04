@@ -33,6 +33,7 @@ Route::post("/exercises/{exercise}/practice",\App\Http\Controllers\ExercisePract
 Route::post("/tour/reset",[\App\Http\Controllers\TourController::class,'reset'])->name("tour-reset");
 
 Route::get("startTour",[TourController::class, "startTour"])->name('tour.start');
+Route::delete("deleteUserTour",[TourController::class, "del_user_tour"])->name('tour.deleteUser');
 Route::get("closeTour",[TourController::class, "closeTour"])->name('tour.close');
 
 require __DIR__.'/auth.php';

@@ -6,7 +6,8 @@ import {Logout} from "@/Composable/StepsTour/5_Logout_step";
 import {Login} from "@/Composable/StepsTour/6_Login_step";
 import {Email} from "@/Composable/StepsTour/7_Email_step";
 import axios from "axios";
-import {inject, Ref} from "vue";
+import {inject, nextTick, Ref} from "vue";
+import {modalRegisterRef, showRegister} from "@/Composable/UseModal";
 
 async function resetTourSession() {
     // ensure axios sends cookies
@@ -27,6 +28,24 @@ async function resetTourSession() {
     }
 }
 
+async function deleteTourUser() {
+    axios.defaults.withCredentials = true;
+
+    try {
+        const response = await axios.delete('deleteUserTour');
+
+        console.log('Delete tour user response:', response.data);
+
+        if (response.data?.csrf) {
+            axios.defaults.headers.common['X-CSRF-TOKEN'] = response.data.csrf;
+
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            meta?.setAttribute('content', response.data.csrf);
+        }
+    } catch (error) {
+        console.error('Error deleting tour user:', error);
+    }
+}
 function CreateTour(isTourActive?: Ref<boolean>) {
     //Lo primero borrar si existe el usuario de ejemplo del tour
 if (isTourActive)
@@ -36,6 +55,8 @@ if (isTourActive)
 
     async function startTour() {
         await resetTourSession();
+        await deleteTourUser();
+
 
 
         const tour = new Shepherd.Tour({

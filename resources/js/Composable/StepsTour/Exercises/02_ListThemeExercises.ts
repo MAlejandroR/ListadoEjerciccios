@@ -1,50 +1,22 @@
-import {offset} from "@floating-ui/dom";
+import {tourStep} from "@/Composable/TourDSL";
 import {sidebarExercisesRef} from "@/Composable/UseModal";
 
 export function ListThemeExercises(tour: any) {
-
-    tour.addStep({
-        id: "list-exercises",
-        text: `
-      <h2 class="title">Listado de ejercicios</h2>
-      <p class="text-gray-600 leading-relaxed">
-        Aquí podremos ver un listado de ejercicios de cada tema.
-        Simplemente desplíegalo y podrás acceder a ellos.
-      </p>
-    `,
-        arrow: true,
-        buttons: [
-            {text: "Atrás",
-                action: ()=>{
-                    sidebarExercisesRef.value?.closeFirstUnit();
-                    tour.back();
-                },
-                classes: "fancy-btn-secondary"},
-            {text: "Siguiente", action: tour.next, classes: "fancy-btn-primary"}
-        ],
-
-        beforeShowPromise: async () => {
+    tourStep(tour, "list-exercises")
+        .title("Listado de ejercicios")
+        .text("Aquí podremos ver un listado de ejercicios de cada tema.<br />" +
+            "Simplemente desplíegalo y podrás acceder a ellos.")
+        .arrow(true)
+        .attachLater("#unit-1", "right")
+        .offset(12)
+        .beforeShow(async () => {
             sidebarExercisesRef.value?.openFirstUnit();
-            await new Promise(resolve =>
-                requestAnimationFrame(() =>
-                    requestAnimationFrame(resolve)
-                )
-            );
-            //
-            try {
-                tour.getCurrentStep().updateStepOptions({
-                    attachTo: {
-                        element: "#unit-1",
-                        on: "right"
-                    },
-                    floatingUIOptions: {
-                        middleware: [offset({mainAxis: 12})]
-                    }
-                })
-            } catch (e) {
-                console.warn('No se pudo actualizar options del step (fill):', e);
-            }
-        }
+            await new Promise(resolve =>setTimeout(resolve, 250));
 
-    });
+        })
+        .back("Atrás", () => {
+            sidebarExercisesRef.value?.closeFirstUnit();
+        })
+        .next("Siguiente")
+        .end()
 }

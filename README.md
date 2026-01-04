@@ -203,3 +203,14 @@ Rellenar formulario de registro
 * * Ejercicios
 * * Usuarios
 > FIN TOUR
+
+[17:19]
+Quiero borrar el usuario si existe al empezar el tour
+Quiero tener esto en el tour
+(Al empezar el tour eliminar todo, sesiones y usuarios si existen)
+
+Register => Creo el usuario
+Logout => Cierro sesión pero no borro el usuario
+Login => Puedo hacer un logín con el usuario que se ha registrado
+PROBLEMA
+>Ahora al añadir el borrar usuario al principio tengo un expired al registrarlo

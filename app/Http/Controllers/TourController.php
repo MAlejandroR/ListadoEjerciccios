@@ -19,7 +19,31 @@ class TourController extends Controller
 
 
 
+   public function del_user_tour(Request $request){
+       //        //Borramos el usuario de tour si existe
+        $user = User::where("name","Usuario Ejemplo")->get()->first()??null;
+        $deleted = false;
+        if ($user) {
+            $user->delete();
+            $deleted = true;
+        }
+//Invalidamos la session
+       $request->session()->invalidate();
 
+       //Volvemos a crear la session
+       $request->session()->regenerate();
+
+
+       //Regeneramos el token en sesion
+       $request->session()->regenerateToken();
+       // Devolvemos también el token CSRF nuevo para que el cliente lo actualice
+       return response()->json([
+           'deleted' => $deleted,
+           'message' => $deleted ? 'Tour user deleted successfully' : 'No tour user found (nothing to delete)',
+           'csrf' => csrf_token(),
+       ], 200);
+
+   }
     public function reset(Request $request)
     {
 
@@ -38,23 +62,21 @@ class TourController extends Controller
 
         //Regeneramos el token en sesion
         $request->session()->regenerateToken();
-
-
-        //Borramos el usuario de tour si existe
-        $user = User::where("name","Usuario Ejemplo")->get()->first()??null;
-
-        $deleted = false;
-
-        if ($user) {
-            $user->delete();
-            $deleted = true;
-        }
+//TODO Pendiente de borrar el usuario
+//
+//        //Borramos el usuario de tour si existe
+//        $user = User::where("name","Usuario Ejemplo")->get()->first()??null;
+//
+//        $deleted = false;
+//
+//        if ($user) {
+//            $user->delete();
+//            $deleted = true;
+//        }
 
         // Devolvemos también el token CSRF nuevo para que el cliente lo actualice
         return response()->json([
-            'deleted' => $deleted,
-            'message' => $deleted ? 'Tour user deleted successfully' : 'No tour user found (nothing to delete)',
-            'csrf' => csrf_token(),
+           'csrf' => csrf_token(),
         ], 200);
         //
     }

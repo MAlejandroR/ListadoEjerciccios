@@ -1,21 +1,13 @@
-import {offset} from "@floating-ui/dom";
-
+import {tourStep} from "@/Composable/TourDSL";
 
 export function MarkExercisesAsPracticed(tour: any) {
-    tour.addStep({
-        id: "step-exercise",
-        text: `
-      <h2 class="text-xl font-semibold mb-2 text-gray-900">
-        Ejercicios
-      </h2>
-      <p class="text-gray-600 leading-relaxed">
-        Podremos Marcar  ejercicios como realizados.
-        Esto se guardará y la próxima conexión los veremos marcados.
-        De esta forma puedes recordar los ejercicios que ya realizaste
-      </p>
-    `,
-        beforeShowPromise: async () => {
-            const exerciseIds = [133,134];
+    tourStep(tour, "step-exercise")
+        .title("Ejercicios")
+        .text("Podremos Marcar  ejercicios como realizados.<br />" +
+            "Esto se guardará y la próxima conexión los veremos marcados.<br />" +
+            "De esta forma puedes recordar los ejercicios que ya realizaste<br />")
+        .beforeShow(async() => {
+            const exerciseIds = [133, 134];
 
             for (const id of exerciseIds) {
                 const checkbox = document.querySelector(
@@ -39,33 +31,20 @@ export function MarkExercisesAsPracticed(tour: any) {
 
                 await new Promise(r => setTimeout(r, 100));
 
-            }
 
-            try {
-                tour.getCurrentStep().updateStepOptions({
-                    attachTo: {
-                        element: "#exercise-box-133",
-                        on: "right"
-                    },
-                    floatingUIOptions: {
-                        middleware: [offset({mainAxis: 12})]
-                    }
-                })
-            } catch (e) {
-                console.warn('No se pudo actualizar options del step (fill):', e);
             }
-        },
-        when: {
-            hide: async () => {
+        })
+        .attachLater("#exercise-box-133", "right")
+        .offset(12)
+        .onHide(() => {
+            async () => {
                 // limpiar resaltado al salir del step
                 document
                     .querySelectorAll(".exercise-highlight")
                     .forEach(el => el.classList.remove("exercise-highlight"));
             }
-        },
-        buttons: [
-            { text: "Atrás", action: tour.back, classes: "fancy-btn-secondary" },
-            { text: "Siguiente",action: tour.next,classes: "fancy-btn-primary" }
-        ]
-    });
+        })
+        .next("Siguiente")
+        .back("Atrás")
+        .end()
 }

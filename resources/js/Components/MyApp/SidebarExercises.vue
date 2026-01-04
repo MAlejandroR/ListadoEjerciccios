@@ -14,7 +14,9 @@ const emit = defineEmits(["statement"]);
 const isOpen = ref(true); // <-- OPEN BY DEFAULT (as you requested)
 const showContent = ref(true);
 const listRef = ref(null);
-
+onMounted(()=>{
+    sidebarExercisesRef.value=listRef.value
+})
 //To shepherd
 const openFirstUnit=()=>{
     console.log("en SideBar openFirstUnit :)")
