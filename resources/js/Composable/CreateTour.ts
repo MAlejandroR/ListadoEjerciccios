@@ -8,6 +8,7 @@ import {Email} from "@/Composable/StepsTour/7_Email_step";
 import axios from "axios";
 import {inject, nextTick, Ref} from "vue";
 import {modalRegisterRef, showRegister} from "@/Composable/UseModal";
+import {router} from "@inertiajs/vue3";
 
 async function resetTourSession() {
     // ensure axios sends cookies
@@ -46,6 +47,17 @@ async function deleteTourUser() {
         console.error('Error deleting tour user:', error);
     }
 }
+async function cleanupTour (isTourActive?:Ref<boolean>){
+    try{
+        await resetTourSession();
+        await deleteTourUser();
+        if (isTourActive)
+            isTourActive.value=false
+        await router.reload();
+    }catch(e) {
+        console.log("Error en cleanupTour ", e);
+    }
+}
 function CreateTour(isTourActive?: Ref<boolean>) {
     //Lo primero borrar si existe el usuario de ejemplo del tour
 if (isTourActive)
@@ -54,9 +66,8 @@ if (isTourActive)
 
 
     async function startTour() {
-        await resetTourSession();
-        await deleteTourUser();
 
+        await cleanupTour();
 
 
         const tour = new Shepherd.Tour({
@@ -69,12 +80,20 @@ if (isTourActive)
                 cancelIcon: {enabled: true}
             }
         });
-        Welcome(tour);
-        Register(tour);
-        Units(tour);
-        Logout(tour);
-        Email(tour);
+
+        // 🔴 CRITICAL: handle ANY close
+        tour.on('cancel', async()=>{
+            await cleanupTour(isTourActive);
+        });
+
+
+        // Welcome(tour);
+        // Register(tour);
+        // Units(tour);
+        // Logout(tour);
         Login(tour);
+        Email(tour);
+
 
         tour.start();
     }

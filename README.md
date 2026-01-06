@@ -214,3 +214,5 @@ Logout => Cierro sesión pero no borro el usuario
 Login => Puedo hacer un logín con el usuario que se ha registrado
 PROBLEMA
 >Ahora al añadir el borrar usuario al principio tengo un expired al registrarlo
+ 
+[05/01/2026]

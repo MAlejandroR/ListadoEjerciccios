@@ -3,7 +3,7 @@ import {defineEmits, onMounted, onUnmounted, ref} from "vue";
 
 import {X} from "lucide-vue-next"
 import {usePage} from "@inertiajs/vue3";
-import {modalRegisterRef, modalBoxRef} from "@/Composable/UseModal";
+import {modalRegisterRef,modalLoginRef, modalBoxRef} from "@/Composable/UseModal";
 
 
 
@@ -26,6 +26,7 @@ const close = () => emit("close");
 //TODO Modificar y evitar uso de document usando vue ...
 onMounted(() => {
         modalRegisterRef.value = modalBox.value;
+        modalLoginRef.value = modalBox.value;
 
         document.addEventListener("keydown", (e) => {
                 if (e.key === "Escape")

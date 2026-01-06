@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, nextTick, ref} from "vue";
+import {defineEmits, defineProps, defineExpose, nextTick, ref} from "vue";
 import UnitItem from "@/Components/MyApp/SideBar/UnitItem.vue";
 import {Unit} from     "@/Components/MyApp/types/Unit";
 import {Exercise} from "@/Components/MyApp/types/Exercise.js";

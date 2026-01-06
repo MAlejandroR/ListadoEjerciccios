@@ -1,7 +1,7 @@
-import { MainRegister } from "@/Composable/StepsTour/Register/01_MainRegister";
-import {OpenMenuRegister} from "@/Composable/StepsTour/Register/03_OpenMenuRegister";
-import {FillMenuRegister} from "@/Composable/StepsTour/Register/04_FillMenuRegister";
-import {PressSubmitRegisterOption} from "@/Composable/StepsTour/Register/FillField/06_PressSubmitRegisterOption";
+import { MainRegister } from "@/Composable/StepsTour/01_Register/01_MainRegister";
+import {OpenMenuRegister} from "@/Composable/StepsTour/01_Register/03_OpenMenuRegister";
+import {FillMenuRegister} from "@/Composable/StepsTour/01_Register/04_FillMenuRegister";
+import {PressSubmitRegisterOption} from "@/Composable/StepsTour/01_Register/FillField/06_PressSubmitRegisterOption";
 
 
 
